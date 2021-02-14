@@ -158,6 +158,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\WinApiFormLibrary\Library\Canvas.hpp" />
     <ClInclude Include="..\WinApiFormLibrary\Library\Form.hpp" />
     <ClInclude Include="..\WinApiFormLibrary\Library\FormTypes.hpp" />
   </ItemGroup>

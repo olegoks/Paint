@@ -26,5 +26,8 @@
     <ClInclude Include="..\WinApiFormLibrary\Library\Form.hpp">
       <Filter>Form</Filter>
     </ClInclude>
+    <ClInclude Include="..\WinApiFormLibrary\Library\Canvas.hpp">
+      <Filter>Form</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
