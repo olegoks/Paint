@@ -17,10 +17,13 @@ public:
 
 	void Run(int nCmdShow)noexcept(false) {
 
+		
 		Form::Size(1000, 700);
 		Form::Style(WS_EX_TOPMOST, WS_OVERLAPPEDWINDOW | WS_THICKFRAME | WS_CLIPCHILDREN);
 		Form::Create(L"My form");
 		Form::Show(nCmdShow);
+		Form::Caption(L"Paint");
+
 		canvas_.InitCanvasProc([this](Message& message)noexcept->bool {
 			
 			switch (message.key_type.action_) {
@@ -30,6 +33,15 @@ public:
 				int y = message.Y();
 				Pixel pixel{ 0, 77, 255 };
 				canvas_.SetPixel(x, y, pixel);
+				canvas_.SetPixel(x+1, y, pixel);
+				canvas_.SetPixel(x-1, y, pixel);
+				canvas_.SetPixel(x, y+1, pixel);
+				canvas_.SetPixel(x, y-1, pixel);
+
+				canvas_.SetPixel(x + 1, y +1, pixel);
+				canvas_.SetPixel(x - 1, y - 1, pixel);
+				canvas_.SetPixel(x -1, y + 1, pixel);
+				canvas_.SetPixel(x + 1, y - 1, pixel);
 
 				return true;
 
@@ -38,6 +50,7 @@ public:
 			return false;
 
 			});
+
 		canvas_.Create(Handle());
 		canvas_.Show(SW_SHOW);
 		Form::Run();
