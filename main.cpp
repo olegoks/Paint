@@ -1,47 +1,42 @@
 #include <Form.hpp>
 #include <Canvas.hpp>
+#include <Button.hpp>
 
 class MyForm :public Form {
 private:
 
 	Canvas canvas_;
+	Button button_;
 
 public:
 
-	explicit MyForm(const HINSTANCE hInstance)noexcept(true) :
+	explicit MyForm(const HINSTANCE hInstance)noexcept(false) :
 		Form::Form{ hInstance },
-		canvas_{ hInstance, 900, 600, Color{ 255, 255, 255 } }{
+		canvas_{ hInstance, 0, 0, 1000, 300 },
+		button_{ hInstance }{
 
 
 	}
 
 	void Run(int nCmdShow)noexcept(false) {
 
-		
-		Form::Size(1000, 700);
+		Form::Size(500, 700);
 		Form::Style(WS_EX_TOPMOST, WS_OVERLAPPEDWINDOW | WS_THICKFRAME | WS_CLIPCHILDREN);
 		Form::Create(L"My form");
 		Form::Show(nCmdShow);
 		Form::Caption(L"Paint");
 
-		canvas_.InitCanvasProc([this](Message& message)noexcept->bool {
+		canvas_.InitCanvasProc([this](Message& message)noexcept(true)->bool {
 			
-			switch (message.key_type.action_) {
+			switch (message.GetAction()) {
 			case Action::MouseMove:
 
-				int x = message.X();
-				int y = message.Y();
+				int x = message.GetX();
+				int y = message.GetY();
 				Pixel pixel{ 0, 77, 255 };
-				canvas_.SetPixel(x, y, pixel);
-				canvas_.SetPixel(x+1, y, pixel);
-				canvas_.SetPixel(x-1, y, pixel);
-				canvas_.SetPixel(x, y+1, pixel);
-				canvas_.SetPixel(x, y-1, pixel);
 
-				canvas_.SetPixel(x + 1, y +1, pixel);
-				canvas_.SetPixel(x - 1, y - 1, pixel);
-				canvas_.SetPixel(x -1, y + 1, pixel);
-				canvas_.SetPixel(x + 1, y - 1, pixel);
+				canvas_.Line(x, y, 0, 0, Color{ 255, 0, 0 });
+				canvas_.Flush();
 
 				return true;
 
@@ -51,8 +46,29 @@ public:
 
 			});
 
+		//button_.InitButtonProc([](Message& message)noexcept->bool {
+		//	
+		//	Action action = message.GetAction();
+		//	
+		//	if (action == Action::ButtonClicked) {
+
+		//		MessageBoxW(NULL, L"Button clicked", L"Button", MB_OK);
+		//		
+		//		return true;
+
+		//	}
+
+		//	return false;
+
+		//	});
+
+		button_.Create(Handle(), L"SomeText");
+		button_.Show();
+
 		canvas_.Create(Handle());
 		canvas_.Show(SW_SHOW);
+		canvas_.Position(100, 100);
+
 		Form::Run();
 
 	}
@@ -61,10 +77,9 @@ public:
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 
-	MyForm form{ hInstance };
-
 	try {
 
+		MyForm form{ hInstance };
 		form.Run(nCmdShow);
 
 	} catch (const FormExcep& exception) {
