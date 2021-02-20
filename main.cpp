@@ -11,12 +11,23 @@ private:
 public:
 
 };
+
+class MyCanvas : public Canvas {
+private:
+
+
+
+
+};
+
+
 class MyForm :public Form {
 private:
 
 	Canvas canvas_;
 	Button but_rect_;
 	Button but_square_;
+	Button but_line_;
 
 public:
 
@@ -24,7 +35,9 @@ public:
 		Form::Form{ hInstance },
 		canvas_{ hInstance, 0, 0, 1000, 300 },
 		but_rect_{ hInstance },
-		but_square_{ hInstance }{
+		but_square_{ hInstance },
+		but_line_{ hInstance }{
+
 
 
 	}
@@ -36,7 +49,6 @@ public:
 		Form::Create(L"My form");
 		Form::Show(nCmdShow);
 		Form::Caption(L"Paint");
-
 
 		but_rect_.InitButtonProc([](Message& message)->bool {
 			
@@ -84,8 +96,18 @@ public:
 			});
 
 		but_rect_.Create(Handle(), L"Button");
+		but_square_.Create(Handle(), L"Button");
+		but_line_.Create(Handle(), L"Button");
+
 		but_rect_.Show();
+		but_square_.Show();
+		but_square_.Position(0, 60);
+		but_line_.Show();
+		but_line_.Position(0, 120);
+
 		but_rect_.Image(L"D:\\C++\\Paint\\Rectangle.bmp");
+		but_square_.Image(L"D:\\C++\\Paint\\Rectangle.bmp");
+		but_line_.Image(L"D:\\C++\\Paint\\Rectangle.bmp");
 
 		canvas_.Create(Handle());
 		canvas_.Show(SW_SHOW);
