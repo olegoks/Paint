@@ -20,13 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\WinApiFormLibrary\Library\FormTypes.hpp">
-      <Filter>Form</Filter>
-    </ClInclude>
-    <ClInclude Include="..\WinApiFormLibrary\Library\Form.hpp">
-      <Filter>Form</Filter>
-    </ClInclude>
-    <ClInclude Include="..\WinApiFormLibrary\Library\Canvas.hpp">
+    <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp">
       <Filter>Form</Filter>
     </ClInclude>
   </ItemGroup>

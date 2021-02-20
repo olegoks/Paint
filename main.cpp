@@ -1,19 +1,30 @@
-#include <Form.hpp>
-#include <Canvas.hpp>
-#include <Button.hpp>
+#include <FormsLibrary.hpp>
 
+#include <filesystem>
+
+
+class UserInterface {
+private:
+
+
+
+public:
+
+};
 class MyForm :public Form {
 private:
 
 	Canvas canvas_;
-	Button button_;
+	Button but_rect_;
+	Button but_square_;
 
 public:
 
 	explicit MyForm(const HINSTANCE hInstance)noexcept(false) :
 		Form::Form{ hInstance },
 		canvas_{ hInstance, 0, 0, 1000, 300 },
-		button_{ hInstance }{
+		but_rect_{ hInstance },
+		but_square_{ hInstance }{
 
 
 	}
@@ -26,17 +37,43 @@ public:
 		Form::Show(nCmdShow);
 		Form::Caption(L"Paint");
 
+
+		but_rect_.InitButtonProc([](Message& message)->bool {
+			
+			if (message.GetAction() == Action::ButtonClicked) {
+
+				MessageBoxA(NULL, u8"Button clicked", "Button message", MB_OK);
+
+				return true;
+
+			}
+			
+				return false;
+
+			});
+
 		canvas_.InitCanvasProc([this](Message& message)noexcept(true)->bool {
 			
 			switch (message.GetAction()) {
 			case Action::MouseMove:
 
+				static int prev_x = 0;
+				static int prev_y = 0;
+
 				int x = message.GetX();
 				int y = message.GetY();
+
 				Pixel pixel{ 0, 77, 255 };
 
-				canvas_.Line(x, y, 0, 0, Color{ 255, 0, 0 });
-				canvas_.Flush();
+				if (prev_x && prev_y) {
+				
+					canvas_.Line(x, y, prev_x, prev_y, Color{ 255, 0, 0 });
+					canvas_.Flush();
+				
+				}
+
+				prev_x = x;
+				prev_y = y;
 
 				return true;
 
@@ -46,29 +83,14 @@ public:
 
 			});
 
-		//button_.InitButtonProc([](Message& message)noexcept->bool {
-		//	
-		//	Action action = message.GetAction();
-		//	
-		//	if (action == Action::ButtonClicked) {
-
-		//		MessageBoxW(NULL, L"Button clicked", L"Button", MB_OK);
-		//		
-		//		return true;
-
-		//	}
-
-		//	return false;
-
-		//	});
-
-		button_.Create(Handle(), L"SomeText");
-		button_.Show();
+		but_rect_.Create(Handle(), L"Button");
+		but_rect_.Show();
+		but_rect_.Image(L"D:\\C++\\Paint\\Rectangle.bmp");
 
 		canvas_.Create(Handle());
 		canvas_.Show(SW_SHOW);
 		canvas_.Position(100, 100);
-
+		
 		Form::Run();
 
 	}
@@ -84,7 +106,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
 	} catch (const FormExcep& exception) {
 
-		MessageBoxA(NULL, exception.What().data(), u8"Error!", MB_OK );
+		MessageBoxA(NULL, exception.What().c_str(), u8"Error!", MB_OK );
 
 	}
 
