@@ -71,19 +71,6 @@ public:
 
 };
 
-//class MyButton : public Button {
-//public:
-//
-//	explicit MyButton(const HINSTANCE hInstance, const HWND parent_hWnd)noexcept(false):
-//		Button::Button{ hInstance }{
-//
-//		Button::Create(parent_hWnd);
-//		Button::
-//
-//	}
-//
-//};
-
 class Application :public MyForm {
 private:
 
