@@ -3,24 +3,6 @@
 #include <filesystem>
 
 
-class UserInterface {
-private:
-
-
-
-
-public:
-
-};
-
-class MyCanvas : public Canvas {
-private:
-
-
-
-
-};
-
 #include <array>
 #include <cstdint>
 
@@ -41,10 +23,10 @@ private:
 
 public:
 
-	explicit ColorsPanel(const HINSTANCE hInstance, const HWND parent_hWnd)noexcept(false):
+	explicit ColorsPanel(const HWND parent_hWnd)noexcept(false):
 		buttons_{ } {
 
-		for (int delta = 0, i = 0; i < 5; i++) {
+		for (int delta = 160, i = 0; i < 5; i++) {
 		
 			buttons_[i].Create(parent_hWnd, L"Button");
 			buttons_[i].Position(delta, 0 );
@@ -67,10 +49,10 @@ public:
 class MyForm :public Form {
 public:
 	
-	explicit MyForm(const HINSTANCE hInstance)noexcept(false) :
-		Form::Form{ GetModuleHandleW(NULL) }{
+	explicit MyForm()noexcept(false) :
+		Form::Form{}{
 
-		Form::Size(500, 700);
+		Form::Size(1180, 800);
 		Form::Style(WS_EX_TOPMOST, WS_OVERLAPPEDWINDOW | WS_THICKFRAME | WS_CLIPCHILDREN);
 		Form::Create(L"MyForm");
 		Form::Caption(L"Paint");
@@ -107,23 +89,24 @@ private:
 	Button but_square_;
 	Button but_line_;
 	ColorsPanel colors_;
+	Button left_;
+	Button right_;
 
 public:
 
-	explicit Application(const HINSTANCE hInstance)noexcept(false) :
-		MyForm::MyForm{ hInstance },
-		canvas_{ hInstance, 0, 0, 1000, 300 },
+	explicit Application()noexcept(false) :
+		MyForm::MyForm{ },
+		canvas_{ 0, 0, 1000, 600 },
 		but_rect_{ },
 		but_square_{  },
 		but_line_{ },
-		colors_{ hInstance, Handle() }{
+		colors_{ Handle() }{
 
 
 
 	}
 
 	void Run(int nCmdShow)noexcept(false) {
-
 
 		but_rect_.InitButtonProc([](Message& message)->bool {
 			
@@ -181,13 +164,24 @@ public:
 		but_line_.Show();
 		but_line_.Position(0, 240);
 
+		left_.Create(Handle());
+		left_.Show();
+		left_.Position(300, 0);
+		
+
+		right_.Create(Handle());
+		right_.Show();
+		right_.Position(380, 0);
+
+		left_.Image(L"D:\\C++\\Paint\\Left.bmp");
+		right_.Image(L"D:\\C++\\Paint\\Right.bmp");
 		but_rect_.Image(L"D:\\C++\\Paint\\Rectangle.bmp");
 		but_square_.Image(L"D:\\C++\\Paint\\Square.bmp");
 		but_line_.Image(L"D:\\C++\\Paint\\Line.bmp");
 
 		canvas_.Create(Handle());
 		canvas_.Show(SW_SHOW);
-		canvas_.Position(100, 100);
+		canvas_.Position(80, 60);
 		
 		Form::Run();
 
@@ -199,7 +193,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
 	try {
 
-		Application form{ hInstance };
+		Application form{  };
 		form.Run(nCmdShow);
 
 	} catch (const FormExcep& exception) {

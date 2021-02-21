@@ -14,7 +14,7 @@ private:
 
 public:
 
-	EXPIMP explicit Form(const HINSTANCE hInstance)noexcept(true);
+	EXPIMP explicit Form()noexcept(true);
 	EXPIMP ~Form()noexcept(true);
 
 protected:

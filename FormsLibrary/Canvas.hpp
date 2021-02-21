@@ -5,7 +5,7 @@
 
 using Color = Pixel;
 
-EXPIMP class Canvas final : protected Form{
+EXPIMP class Canvas : protected Form{
 
 private:
 
@@ -16,7 +16,7 @@ private:
 
 public:
 
-	EXPIMP explicit Canvas(const HINSTANCE hInstance, const int x, const int y, const int width, const int height)noexcept(false);
+	EXPIMP explicit Canvas( const int x, const int y, const int width, const int height)noexcept(false);
 	EXPIMP void Position(const int x, const int y)noexcept(true);
 	EXPIMP void Fill(const Color& color)noexcept(true);
 	EXPIMP void Line(int x, int y, int _x, int _y, const Color& color)noexcept(true);
