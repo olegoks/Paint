@@ -1,6 +1,8 @@
 *.vs
 x64/
 Debug
+FormsLibrary/x64
+FormsLibrary/*.vs
 
 # Prerequisites
 *.d

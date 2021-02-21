@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Implementation">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="FormInterface">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Canvas">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Button">
+      <UniqueIdentifier>{88b6913f-7917-4acd-95ca-3ef9641d9364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HelpFunctions">
+      <UniqueIdentifier>{e721fe08-8627-4541-a2a5-6528dbd082fd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Library\FormTypes.hpp">
+      <Filter>FormInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="FormImpl.hpp">
+      <Filter>Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Form.hpp">
+      <Filter>FormInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Canvas.hpp">
+      <Filter>Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Button.hpp">
+      <Filter>Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FormsLibrary.hpp" />
+    <ClInclude Include="Functions.hpp">
+      <Filter>HelpFunctions</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FormTypes.cpp">
+      <Filter>Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="FormImpl.cpp">
+      <Filter>Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="Form.cpp">
+      <Filter>Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="Functions.cpp">
+      <Filter>HelpFunctions</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
