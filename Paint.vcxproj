@@ -164,9 +164,11 @@
   <ItemGroup>
     <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp" />
     <ClInclude Include="AbstractFigure.hpp" />
+    <ClInclude Include="CanvasCommand.hpp" />
     <ClInclude Include="ColorsPanel.hpp" />
     <ClInclude Include="DLL.hpp" />
     <ClInclude Include="FiguresPanel.hpp" />
+    <ClInclude Include="MyCanvas.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

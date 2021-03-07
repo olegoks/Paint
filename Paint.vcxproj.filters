@@ -25,6 +25,12 @@
     <Filter Include="FiguresPanel">
       <UniqueIdentifier>{2e10396d-e9f7-40ba-ac4f-1a3d58a5a02e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CanvasCommand">
+      <UniqueIdentifier>{38ddc767-80af-4c2b-a749-31076b7e8dbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Canvas">
+      <UniqueIdentifier>{de288aa6-2446-4ae1-974f-4c712afd8668}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -46,6 +52,12 @@
     </ClInclude>
     <ClInclude Include="FiguresPanel.hpp">
       <Filter>FiguresPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasCommand.hpp">
+      <Filter>CanvasCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="MyCanvas.hpp">
+      <Filter>Canvas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

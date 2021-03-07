@@ -3,28 +3,7 @@
 #ifndef ABSTRACTFIGURE_HPP
 #define ABSTRACTFIGURE_HPP
 
-#include "Canvas.hpp"
-
-#include <cstdint>
-using std::uint64_t;
-
-class Coordinats {
-private:
-
-	const uint64_t x_;
-	const uint64_t y_;
-
-public:
-
-	explicit Coordinats(const uint64_t x, const uint64_t y)noexcept:
-		x_{ x }, y_{ y }{}
-
-	explicit Coordinats()noexcept:
-		Coordinats{ 0, 0 } {}
-
-	~Coordinats()noexcept = default;
-
-};
+#include "CanvasCommand.hpp"
 
 class FigureInfo final {
 private:
@@ -49,92 +28,77 @@ public:
 
 };
 
-enum class CommandType : uint64_t {
-
-	NOTHING = 0,
-	LINE,
-	FILL,
-	POINT
-
-};
-
-//class AbstractCanvasCommand {
-//private:
-//
-//	CommandType command_;
-//
-//public:
-//
-//	explicit AbstractCanvasCommand(CommandType command)noexcept :
-//		command_{ command } {}
-//
-//	virtual void Execute(Canvas& canvas) = 0;
-//	inline CommandType GetCommandType()const noexcept { return command_; };
-//
-//};
-
-class CanvasCommand{
-private:
-
-	CommandType command_;
-	Coordinats begin_;
-	Coordinats end_;
-	Color color_;
-
-public:
-
-	explicit CanvasCommand(const CommandType command, const Coordinats& begin, const Coordinats& end, const Color color)noexcept :
-		begin_{ begin }, end_{ end }, color_{ color }{ }
-
-	explicit CanvasCommand(const CommandType command, const Coordinats& coordinats, const Color color)noexcept:
-		CanvasCommand::CanvasCommand{ command, coordinats, Coordinats{ 0, 0 }, color_{ color }{}
-
-};
-
 #include <memory>
+using CommandsBuffer = std::vector<AbstractCanvasCommand*>;
 
 class AbstractFigure {
 private:
 
-	std::vector<CanvasCommand> commands_;
+	CommandsBuffer commands_;
 
 protected:
 
-	void Command(const CanvasCommand& command)noexcept {
+	void Command(AbstractCanvasCommand* const command)noexcept {
 
-		commands_.push_back(std::move(command));
+		commands_.push_back(command);
+
+	}
+
+	void ClearCommandsBuffer()noexcept {
+
+		for (auto command_ptr : commands_)
+			if (command_ptr != nullptr)
+				delete command_ptr;
 
 	}
 
 public:
 
-	explicit AbstractFigure()noexcept {
+	explicit AbstractFigure()noexcept { }
 
+	CommandsBuffer& GetCommands()noexcept { return commands_; }
+	virtual void SetParametrs(const FigureInfo& info) = 0;
 
-
-	}
-
-	//Draw figure on canvas without calling flush
-	virtual void Draw(Canvas& canvas, const FigureInfo& pos_size) = 0;
-	
 };
 
 #include <array>
 
 class RectangleFigure : public AbstractFigure {
 private:
-
 public:
 
-	explicit RectangleFigure():
-		AbstractFigure::AbstractFigure{}{ }
+	explicit RectangleFigure(const FigureInfo& info):
+		AbstractFigure::AbstractFigure{}{ 
+
+		Coordinats left_top{ info.left_bottom_.X(), info.right_top_.Y() };
+		Coordinats right_bottom{ info.right_top_.X(), info.left_bottom_.Y() };
+
+		try {
+
+			Command(new SolidLineCanvasCommand{ info.left_bottom_, left_top, info.color_ });
+			Command(new SolidLineCanvasCommand{ left_top, info.right_top_, info.color_ });
+			Command(new SolidLineCanvasCommand{ info.right_top_, right_bottom, info.color_ });
+			Command(new SolidLineCanvasCommand{ right_bottom, info.left_bottom_, info.color_ });
+
+		} catch (const std::bad_alloc& exception) {
+
+			ClearCommandsBuffer();
+
+			throw 1;
+
+		}
 	
-	void Draw(Canvas& canvas, const FigureInfo& info)noexcept {
-
-		
-
 	}
 
+	virtual void SetParametrs(const FigureInfo& info) = 0;
+
+};
+
+enum class PluginType : uint64_t {
+
+	NOTHING = 0,
+	FIGURE,
+	COLOR
 
 };
 
