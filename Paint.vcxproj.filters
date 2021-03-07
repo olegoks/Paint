@@ -13,6 +13,18 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Figure">
+      <UniqueIdentifier>{4fcf4449-edfa-4b45-b3b3-89f8abeb723f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DLL">
+      <UniqueIdentifier>{5720087b-79c2-47bd-ae10-b18e8141e068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ColorsPanel">
+      <UniqueIdentifier>{8b0ab5b4-561c-4fbe-a30a-f471ae9b5480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FiguresPanel">
+      <UniqueIdentifier>{2e10396d-e9f7-40ba-ac4f-1a3d58a5a02e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -22,6 +34,18 @@
   <ItemGroup>
     <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp">
       <Filter>Form</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractFigure.hpp">
+      <Filter>Figure</Filter>
+    </ClInclude>
+    <ClInclude Include="DLL.hpp">
+      <Filter>DLL</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorsPanel.hpp">
+      <Filter>ColorsPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="FiguresPanel.hpp">
+      <Filter>FiguresPanel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

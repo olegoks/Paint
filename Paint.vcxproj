@@ -163,6 +163,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp" />
+    <ClInclude Include="AbstractFigure.hpp" />
+    <ClInclude Include="ColorsPanel.hpp" />
+    <ClInclude Include="DLL.hpp" />
+    <ClInclude Include="FiguresPanel.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
