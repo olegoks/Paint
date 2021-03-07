@@ -43,12 +43,6 @@ public:
 		canvas_{ Handle(), 100 , 100, 400, 300 },
 		colors_{ Handle() },
 		figures_{ Handle(), 0, 100, 100, 300 }{
-	
-		figures_.InitProcFigureSelect([this](AbstractFigure* figure)noexcept->void {
-			
-		
-			
-			});
 
 		canvas_.InitProcessActionFunction([this](MyCanvas& canvas, Message& message)->bool {
 			
@@ -59,6 +53,14 @@ public:
 				uint64_t x = message.GetX();
 				uint64_t y = message.GetY();
 				AbstractFigure* figure_to_draw = figures_.GetFigure();
+				
+				if (figure_to_draw == nullptr) {
+					
+					MessageBoxA(Handle(), u8"Please, select figure.", u8"Notification!", MB_OK);
+				
+					return true;
+				}
+
 				figure_to_draw->SetParametrs(FigureInfo{ Coordinats{ x, y }, Coordinats{ x + 100, y + 100 }, current_color_ });
 				canvas.DrawFigure(figure_to_draw);
 				canvas.Flush();

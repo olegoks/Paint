@@ -20,7 +20,6 @@ private:
 
 	std::vector<Button> buttons_;
 	std::vector<DLL>	plugins_;
-	ProcessFigureSelect process_selection_;
 	GetFigureObject current_get_object_function_;
 
 private:
@@ -60,7 +59,8 @@ public:
 
 	explicit FiguresPanel(const HWND hWnd, const uint64_t x, const uint64_t y, const uint64_t width, const uint64_t height):
 		buttons_{},
-		plugins_{} {
+		plugins_{},
+		current_get_object_function_{ []()->AbstractFigure* {  return nullptr; } }{
 
 		namespace fs = std::filesystem;
 
@@ -109,12 +109,6 @@ public:
 			button.Show();
 
 		}
-
-	}
-
-	void InitProcFigureSelect(ProcessFigureSelect process_selection)noexcept {
-
-		process_selection_ = process_selection;
 
 	}
 
