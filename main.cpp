@@ -14,17 +14,17 @@ public:
 	explicit MyForm(const std::wstring& caption, const uint64_t x, const uint64_t y, const uint64_t width, const uint64_t height)noexcept:
 		Form::Form{}{
 
-		Form::Position(x, y);
-		Form::Size(width, height);
-		Form::Style(WS_EX_TOPMOST, WS_OVERLAPPEDWINDOW | WS_THICKFRAME | WS_CLIPCHILDREN);
-		Form::Create(L"MyForm");
-		Form::Caption(caption.c_str());
+		Form::ChangePosition(x, y);
+		Form::ChangeSize(width, height);
+		Form::ChangeStyle(WS_EX_TOPMOST, WS_OVERLAPPEDWINDOW | WS_THICKFRAME | WS_CLIPCHILDREN);
+		Form::Create();
+		Form::ChangeCaption(caption.c_str());
 		Form::Show(SW_SHOW);
 
 	}
 	
 	void Run() { Form::Run(); }
-	HWND Handle() { return Form::Handle(); }
+	HWND Handle() { return Form::GetHandle(); }
 
 };
 
@@ -35,6 +35,8 @@ private:
 	ColorsPanel colors_;
 	FiguresPanel figures_;
 	Color current_color_;
+	Button return_back_;
+	Button return_forward_;
 
 public:
 
@@ -44,6 +46,42 @@ public:
 		colors_{ Handle() },
 		figures_{ Handle(), 0, 100, 100, 300 }{
 
+		return_back_.ChangeSize(100, 80);
+		return_back_.ChangePosition(0, 0);
+		return_back_.Image(L"Left.bmp");
+		return_back_.Create(Handle());
+		return_back_.Show();
+		return_back_.SetProcessFunction([this](Message& message)noexcept->bool {
+			
+			if (message.GetAction() == Action::ButtonClicked) {
+
+				canvas_.ReturnBack();
+
+				return true;
+
+			}
+
+			return false;
+			});
+
+		return_forward_.ChangeSize(100, 80);
+		return_forward_.ChangePosition(100, 0);
+		return_forward_.Image(L"Right.bmp");
+		return_forward_.Create(Handle());
+		return_forward_.Show();
+		return_forward_.SetProcessFunction([this](Message& message)noexcept->bool {
+
+			if (message.GetAction() == Action::ButtonClicked) {
+
+				canvas_.ReturnForward();
+
+				return true;
+
+			}
+
+			return false;
+			});
+
 		canvas_.InitProcessActionFunction([this](MyCanvas& canvas, Message& message)->bool {
 			
 			static Coordinats last_click{ 0, 0 };
@@ -52,6 +90,7 @@ public:
 
 				uint64_t x = message.GetX();
 				uint64_t y = message.GetY();
+
 				AbstractFigure* figure_to_draw = figures_.GetFigure();
 				
 				if (figure_to_draw == nullptr) {
@@ -153,15 +192,14 @@ public:
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 
-
 	try {
 
 		Application form{  };
 		form.Run(nCmdShow);
 
-	} catch (const FormExcep exception) {
+	} catch (const ComponentException exception) {
 
-		MessageBoxA(NULL, exception.What().c_str(), u8"Error!", MB_OK );
+		MessageBoxA(NULL, exception.What().c_str(), u8"Error!", MB_OK);
 
 	}
 

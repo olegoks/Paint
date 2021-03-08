@@ -15,31 +15,32 @@ private:
 	using FiguresBuffer = std::vector<AbstractFigure*>;
 	FiguresBuffer figures_;
 	ProcessCanvasAction process_action_;
-	uint64_t pointer_;
+	FiguresBuffer::iterator pointer_;
 	Color fill_color_;
 
 private:
 
 	void ClearNotDrawnFigures()noexcept {
 
-		FiguresBuffer::iterator first_unused_figure = figures_.begin() + pointer_;
-		for (auto it = first_unused_figure; it != figures_.end(); ++it)
-			delete *it;
+		if (figures_.empty() || pointer_ == figures_.end())return;
 
-		figures_.erase(first_unused_figure, figures_.end());
+		for (auto it = pointer_ + 1; it != figures_.end(); ++it)
+			delete* it;
+
+		pointer_ = figures_.erase(++pointer_, figures_.end());
 
 	}
 
 public:
 
 	explicit MyCanvas(const HWND parent_hWnd, const uint64_t x, const uint64_t y, const uint64_t width, const uint64_t height)noexcept :
-		Canvas{ x, y, width, height },
+		Canvas{ },
 		figures_{},
-		pointer_{ 0 },
+		pointer_{ figures_.end() },
 		fill_color_{ Color{ 255, 255, 255 } } {
 
-		Canvas::Size(width, height);
-		Canvas::Position(x, y);
+		Canvas::ChangeSize(width, height);
+		Canvas::ChangePosition(x, y);
 		Canvas::Create(parent_hWnd);
 		Canvas::Show(SW_SHOW);
 
@@ -47,29 +48,25 @@ public:
 
 	void DrawFigure(AbstractFigure* figure) {
 
-		for (auto& command : figure->GetCommands())
-			command->Execute(*dynamic_cast<Canvas*>(this));
-
+		figure->Draw(*dynamic_cast<Canvas*>(this));
 		ClearNotDrawnFigures();
-
 		figures_.push_back(figure);
-		++pointer_;
-	
+		pointer_ = figures_.end() - 1;
+		Canvas::Flush();
+
 	}
 
 	void ReturnBack() {
 
+		//&&
+		if (figures_.empty() || figures_.end() == pointer_)return;
+
 		Canvas::Fill(fill_color_);
-
-		FiguresBuffer::iterator last = figures_.begin() + --pointer_;
-
-		for (auto it = figures_.begin(); it != last; ++it) {
-
-			AbstractFigure* figure = *it;
-			for (auto& command : figure->GetCommands())
-				command->Execute(*dynamic_cast<Canvas*>(this));
-
-		}
+	
+		for (auto it = figures_.begin(); it != pointer_; ++it)
+			(*it)->Draw(*dynamic_cast<Canvas*>(this));
+		
+		--pointer_;
 
 		Canvas::Flush();
 
@@ -77,14 +74,10 @@ public:
 
 	void ReturnForward() {
 
-		if (pointer_ < figures_.size()) {
+		if (pointer_ == figures_.end() - 1)return;
+		(*(++pointer_))->Draw(*dynamic_cast<Canvas*>(this));
+		Canvas::Flush();
 
-			AbstractFigure* figure_to_draw = figures_[++pointer_];
-			for (auto& command : figure_to_draw->GetCommands())
-				command->Execute(*dynamic_cast<Canvas*>(this));
-
-		}
-	
 	}
 
 	void Flush() { 
@@ -103,7 +96,7 @@ public:
 
 		process_action_ = process_action;
 
-		Canvas::InitCanvasProc([this](Message& message)noexcept->bool {
+		Canvas::SetCanvasProc([this](Message& message)noexcept->bool {
 
 			return process_action_(*this, message);
 

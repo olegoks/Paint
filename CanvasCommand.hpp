@@ -70,6 +70,7 @@ public:
 		canvas.Line(begin_.X(), begin_.Y(), end_.X(), end_.Y(), color_);
 
 	}
+
 };
 
 class PointCanvasCommand : public AbstractCanvasCommand {
@@ -86,6 +87,25 @@ public:
 	virtual void Execute(Canvas& canvas)const override {
 
 		canvas.SetPixel(coord_.X(), coord_.Y(), color_);
+
+	}
+
+};
+
+class FillCanvasCommand : public AbstractCanvasCommand {
+private:
+
+	Color color_;
+
+public:
+
+	explicit FillCanvasCommand(const Color& color)noexcept :
+		AbstractCanvasCommand{ sizeof FillCanvasCommand, CommandType::FILL },
+		color_{ color }{}
+
+	void Execute(Canvas& canvas)const noexcept {
+
+		canvas.Fill(color_);
 
 	}
 

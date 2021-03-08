@@ -78,7 +78,7 @@ public:
 			Button& button = buttons_.back();
 			button.Image(image_path);
 
-			button.InitButtonProc([get_object, this](Message& message)noexcept->bool {
+			button.SetProcessFunction([get_object, this](Message& message)noexcept->bool {
 				
 				static GetFigureObject get_figure_object = get_object;
 
@@ -102,8 +102,8 @@ public:
 
 		for (auto& button : buttons_) {
 
-			button.Size(width, button_height);
-			button.Position(x, button_offset);
+			button.ChangeSize(width, button_height);
+			button.ChangePosition(x, button_offset);
 			button_offset += button_height;
 			button.Create(hWnd);
 			button.Show();

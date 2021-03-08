@@ -30,14 +30,14 @@ private:
 public:
 
 	explicit ColorsPanel(const HWND parent_hWnd)noexcept(false) :
-		buttons_{ Button{} } {
+		buttons_{ Button{}, Button{}, Button{}, Button{}, Button{} } {
 
 		for (int delta = 240, i = 0; i < 5; i++) {
 
-			buttons_[i].Create(parent_hWnd, L"Button");
-			buttons_[i].Position(delta, 0);
+			buttons_[i].Create(parent_hWnd);
+			buttons_[i].ChangePosition(delta, 0);
 			buttons_[i].Show();
-			buttons_[i].Size(20, 20);
+			buttons_[i].ChangeSize(20, 20);
 			delta += 20;
 
 		}
@@ -51,7 +51,7 @@ public:
 		buttons_[3].Image(path{ colors_panel / L"DarkBlue.bmp" });
 		buttons_[4].Image(path{ colors_panel / L"Green.bmp" });
 
-		buttons_[0].InitButtonProc([this](Message& message)noexcept->bool {
+		buttons_[0].SetProcessFunction([this](Message& message)noexcept->bool {
 
 			if (message.GetAction() == Action::ButtonClicked) {
 
@@ -65,7 +65,7 @@ public:
 
 			});
 
-		buttons_[1].InitButtonProc([this](Message& message)noexcept->bool {
+		buttons_[1].SetProcessFunction([this](Message& message)noexcept->bool {
 
 			if (message.GetAction() == Action::ButtonClicked) {
 
@@ -79,7 +79,7 @@ public:
 
 			});
 
-		buttons_[2].InitButtonProc([this](Message& message)noexcept->bool {
+		buttons_[2].SetProcessFunction([this](Message& message)noexcept->bool {
 
 			if (message.GetAction() == Action::ButtonClicked) {
 
@@ -93,7 +93,7 @@ public:
 
 			});
 
-		buttons_[3].InitButtonProc([this](Message& message)noexcept->bool {
+		buttons_[3].SetProcessFunction([this](Message& message)noexcept->bool {
 
 			if (message.GetAction() == Action::ButtonClicked) {
 
@@ -107,7 +107,7 @@ public:
 
 			});
 
-		buttons_[4].InitButtonProc([this](Message& message)noexcept->bool {
+		buttons_[4].SetProcessFunction([this](Message& message)noexcept->bool {
 
 			if (message.GetAction() == Action::ButtonClicked) {
 

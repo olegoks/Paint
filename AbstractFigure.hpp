@@ -59,6 +59,21 @@ public:
 	CommandsBuffer& GetCommands()noexcept { return commands_; }
 	virtual void SetParametrs(const FigureInfo& info) = 0;
 
+	void Draw(Canvas& canvas) {
+
+		for (auto& command : commands_)
+			command->Execute(canvas);
+
+	}
+
+};
+
+class SolidRectangleFigure : public AbstractFigure {
+private:
+
+
+public:
+
 };
 
 #include <array>
