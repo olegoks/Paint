@@ -6,6 +6,8 @@
 #include <any>
 #include <FormTypes.hpp>
 
+class EXPIMP::std::any;
+
 class EXPIMP Button {
 private:
 
@@ -16,7 +18,13 @@ public:
 	explicit Button();
 	~Button()noexcept;
 
+	explicit Button(const Button& copy_button)noexcept = delete;
+	explicit Button(Button&& move_button)noexcept;
+
 public:
+
+	Button& operator=(const Button& copy_button)noexcept = delete;
+	Button& operator=(Button&& move_button)noexcept;
 
 	void SetProcessFunction(ProcessMessage messages_processing)noexcept;
 	void ChangeSize(const int width, const int height);

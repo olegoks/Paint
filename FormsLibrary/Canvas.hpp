@@ -8,7 +8,7 @@
 #include <Pixel.hpp>
 #include <FormTypes.hpp>
 
-
+class EXPIMP::std::any;
 
 class EXPIMP Canvas {
 private:
@@ -18,6 +18,16 @@ private:
 public:
 
 	explicit Canvas();
+
+
+	explicit Canvas(Canvas&& move_form)noexcept;
+	explicit Canvas(const Canvas& copy_form)noexcept = delete;
+
+	Canvas& operator=(Canvas&& move_form)noexcept;
+	Canvas& operator=(const Canvas& copy_form)noexcept = delete;
+
+	~Canvas()noexcept;
+
 	Color GetDefaultBackgroundColor()const noexcept;
 	void Line(int x, int y, int _x, int _y, const Color& color)noexcept;
 	void Create(const HWND parent_hWnd);

@@ -6,6 +6,8 @@
 
 using FileDialogException = ComponentException;
 
+class EXPIMP std::filesystem::path;
+
 class EXPIMP FileDialog final{
 private:
 
@@ -16,6 +18,14 @@ private:
 public:
 
 	explicit FileDialog()noexcept;
+	explicit FileDialog(const FileDialog& copy_dialog)noexcept = delete;
+	explicit FileDialog(FileDialog&& move_dialog)noexcept = default;
+
+	FileDialog& operator=(const FileDialog& copy_dialog)noexcept = delete;
+	FileDialog& operator=(FileDialog&& move_dialog)noexcept = default;
+
+	~FileDialog()noexcept = default;
+
 	void FindFile(const HWND parent_hWnd);
 	std::filesystem::path GetPath()const noexcept;
 	std::wstring GetName()const noexcept;

@@ -91,7 +91,7 @@ public:
 				uint64_t x = message.GetX();
 				uint64_t y = message.GetY();
 
-				AbstractFigure* figure_to_draw = figures_.GetFigure();
+				std::unique_ptr<AbstractFigure> figure_to_draw = figures_.GetFigure();
 				
 				if (figure_to_draw == nullptr) {
 					
@@ -101,7 +101,7 @@ public:
 				}
 
 				figure_to_draw->SetParametrs(FigureInfo{ Coordinats{ x, y }, Coordinats{ x + 100, y + 100 }, current_color_ });
-				canvas.DrawFigure(figure_to_draw);
+				canvas.DrawFigure(figure_to_draw.release());
 				canvas.Flush();
 
 				return true;
@@ -197,7 +197,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 		Application form{  };
 		form.Run(nCmdShow);
 
-	} catch (const ComponentException exception) {
+	} catch (const ComponentException& exception) {
 
 		MessageBoxA(NULL, exception.What().c_str(), u8"Error!", MB_OK);
 

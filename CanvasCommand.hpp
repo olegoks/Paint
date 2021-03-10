@@ -61,7 +61,7 @@ private:
 
 public:
 
-	explicit SolidLineCanvasCommand(const Coordinats& begin, const Coordinats& end, const Color color)noexcept :
+	explicit SolidLineCanvasCommand(const Coordinats& begin, const Coordinats& end, const Color& color)noexcept :
 		AbstractCanvasCommand{ sizeof SolidLineCanvasCommand, CommandType::LINE },
 		begin_{ begin }, end_{ end }, color_{ color }{}
 
@@ -70,6 +70,8 @@ public:
 		canvas.Line(begin_.X(), begin_.Y(), end_.X(), end_.Y(), color_);
 
 	}
+
+	~SolidLineCanvasCommand()noexcept = default;
 
 };
 

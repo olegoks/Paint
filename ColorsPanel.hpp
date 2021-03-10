@@ -3,7 +3,7 @@
 #ifndef COLORSPANEL_HPP
 #define COLORSPANEL_HPP
 
-#include <array>
+#include <vector>
 #include <functional>
 #include <Button.hpp>
 
@@ -24,20 +24,21 @@ public:
 
 private:
 
-	std::array<Button, 5> buttons_;
+	std::vector<Button> buttons_;
 	ProcessFunction user_select_color_;
 
 public:
 
 	explicit ColorsPanel(const HWND parent_hWnd)noexcept(false) :
-		buttons_{ Button{}, Button{}, Button{}, Button{}, Button{} } {
+		buttons_{ } {
 
 		for (int delta = 240, i = 0; i < 5; i++) {
 
-			buttons_[i].Create(parent_hWnd);
-			buttons_[i].ChangePosition(delta, 0);
-			buttons_[i].Show();
-			buttons_[i].ChangeSize(20, 20);
+			buttons_.push_back(Button{});
+			buttons_.back().ChangeSize(20, 20);
+			buttons_.back().ChangePosition(delta, 0);
+			buttons_.back().Create(parent_hWnd);
+			buttons_.back().Show();
 			delta += 20;
 
 		}

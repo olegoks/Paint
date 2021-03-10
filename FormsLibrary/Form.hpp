@@ -4,8 +4,9 @@
 
 #include <windows.h>
 #include <any>
-
 #include "FormTypes.hpp"
+
+class EXPIMP::std::any;
 
 class EXPIMP Form{
 private:
@@ -16,6 +17,12 @@ public:
 
 	explicit Form();
 	~Form()noexcept;
+
+	explicit Form(Form&& move_form)noexcept;
+	explicit Form(const Form& copy_form)noexcept = delete;
+
+	Form& operator=(Form&& move_form)noexcept;
+	Form& operator=(const Form& copy_form)noexcept = delete;
 
 protected:
 

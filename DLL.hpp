@@ -21,7 +21,8 @@ public:
 
 		SUCCESS = 0,
 		LOADLIBRARYERROR,
-		GETFUNCTIONERROR
+		GETFUNCTIONERROR,
+		DLLNAMESETYET
 
 	};
 
@@ -30,6 +31,8 @@ private:
 	Code code_;
 
 public:
+
+	
 
 	explicit DLLException(Code code)noexcept :
 		exception::exception{},
@@ -56,34 +59,44 @@ private:
 
 public:
 
+	static const inline std::string extension{ u8".dll" };
+
 	explicit DLL(std::string&& dll_name)noexcept:
 		hModule_{ NULL },
-		name_{ dll_name }
-		{ }
+		name_{ dll_name } { }
 
-	void Load() {
+	explicit DLL()noexcept:
+		DLL{ std::string{ } }{}
+
+	void Load(std::string&& dll_name = std::string{ }) {
+
+		if (!dll_name.empty() && !name_.empty())
+			throw DLLException{ DLLException::Code::DLLNAMESETYET };
+
+		name_ = std::move(dll_name);
 
 		hModule_ = LoadLibraryA(name_.c_str());
-		DWORD error = GetLastError();
+
 		if (!hModule_)throw 
 			DLLException{ DLLException::Code::LOADLIBRARYERROR };
 
 	}
 
-	
-	FARPROC GetFunction(const char* const function_name) {
+	FARPROC GetFunction(const std::string& function_name) {
 		
-		const FARPROC address = GetProcAddress(hModule_, function_name);
-		DWORD error = GetLastError();
+		if (!hModule_)
+			throw DLLException{ DLLException::Code::GETFUNCTIONERROR };
 
-		if (!address)throw 
-			DLLException{ DLLException::Code::GETFUNCTIONERROR };
+		const FARPROC address = GetProcAddress(hModule_, function_name.c_str());
+
+		if (!address)
+			throw DLLException{ DLLException::Code::GETFUNCTIONERROR };
 		
 		return address;
 
 	}
 
-	void Unload() {
+	void Unload()noexcept {
 
 		FreeLibrary(hModule_);
 

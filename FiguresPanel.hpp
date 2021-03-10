@@ -4,46 +4,43 @@
 
 #include <cstdint>
 using std::uint64_t;
+
 #include <vector>
 #include <string>
 #include <Button.hpp>
-#include "DLL.hpp"
-
-using GetFigureName = std::string(*)();
-using GetFigureObject = AbstractFigure*(*)();
-
 #include <functional>
+
 using ProcessFigureSelect = std::function<void(AbstractFigure*)>;
+
+namespace fs = std::filesystem;
+#include "FigurePlugin.hpp"
 
 class FiguresPanel {
 private:
 
-	std::vector<Button> buttons_;
-	std::vector<DLL>	plugins_;
-	GetFigureObject current_get_object_function_;
+	std::vector<std::pair<FigurePlugin, Button>> plugins_buttons_;
+	std::unique_ptr<FigurePlugin> current_plugin_;
 
 private:
 
-	void LoadPlugins() {
+	void LoadPlugins(const fs::path& plugins_path) {
 
-		using namespace std::filesystem;
-		path plugins_path{ current_path() / u8"plugins/" };
 		if (!exists(plugins_path)) return;
-		for (auto& file : directory_iterator{ plugins_path }) {
 
-			path file_path = file.path();
-			const std::string file_name = file_path.filename().string();
-			const std::string file_extention = file_path.extension().string();
+		for (auto& plugin : fs::directory_iterator{ plugins_path }) {
 
-			if(file_extention == u8".dll"){
+			fs::path plugin_path = plugin.path();
+			const std::string file_extention = plugin_path.extension().string();
+
+			if(file_extention == FigurePlugin::extension){
 				
 				try {
 
-					DLL plugin{ file_path.string() };
+					FigurePlugin plugin{ plugin_path };
 					plugin.Load();
-					plugins_.push_back(plugin);
+					plugins_buttons_.push_back(std::pair(std::move(plugin), Button{}));
 
-				} catch (...) {
+				} catch (const PluginException& exception) {
 
 					continue;
 
@@ -58,33 +55,24 @@ private:
 public:
 
 	explicit FiguresPanel(const HWND hWnd, const uint64_t x, const uint64_t y, const uint64_t width, const uint64_t height):
-		buttons_{},
-		plugins_{},
-		current_get_object_function_{ []()->AbstractFigure* {  return nullptr; } }{
+		plugins_buttons_{} {
 
-		namespace fs = std::filesystem;
+		fs::path plugins_path{ fs::current_path() / u8"plugins/" };
 
-		fs::path plugins_path{ fs::current_path() / u8"plugins" };
-		LoadPlugins();
-		
-		for (auto& plugin : plugins_) {
+		//Creates buttons with default constructors
+		LoadPlugins(plugins_path);
 
-			auto get_name = (GetFigureName)plugin.GetFunction(u8"GetFigureName");
-			buttons_.push_back(Button{});
+		for (auto& [plugin, button] : plugins_buttons_) {
 
-			auto get_object = (GetFigureObject)plugin.GetFunction(u8"GetFigureObject");
+			FigurePlugin& plugin_reference = plugin;
 
-			fs::path image_path{ plugins_path / (get_name() + std::string{ u8".bmp" }) };
-			Button& button = buttons_.back();
-			button.Image(image_path);
-
-			button.SetProcessFunction([get_object, this](Message& message)noexcept->bool {
+			button.SetProcessFunction([&plugin_reference, this](Message& message)noexcept->bool {
 				
-				static GetFigureObject get_figure_object = get_object;
+				static FigurePlugin& figure_plugin = plugin_reference;
 
 				if (message.GetAction() == Action::ButtonClicked) {
 				
-					current_get_object_function_ = get_object;
+					current_plugin_ = std::make_unique<FigurePlugin>(&figure_plugin);
 					
 					return true;
 
@@ -94,13 +82,10 @@ public:
 
 			});
 
-		}
 
-		uint64_t button_height = height / buttons_.size();
-		if (button_height > 80)button_height = 80;
-		uint64_t button_offset = y;
-
-		for (auto& button : buttons_) {
+			uint64_t button_height = height / plugins_buttons_.size();
+			if (button_height > 80)button_height = 80;
+			uint64_t button_offset = y;
 
 			button.ChangeSize(width, button_height);
 			button.ChangePosition(x, button_offset);
@@ -108,13 +93,19 @@ public:
 			button.Create(hWnd);
 			button.Show();
 
+			std::string image_name{ plugin.GetName() + FigurePlugin::image_extension };
+			fs::path image_path{ plugins_path / image_name };
+
+			button.Image(image_path);
+
+
 		}
 
 	}
 
-	AbstractFigure* GetFigure()const noexcept {
+	std::unique_ptr<AbstractFigure> GetFigure()noexcept {
 
-		return current_get_object_function_();
+		return current_plugin_->GetFigureObjectPointer();
 
 	}
 

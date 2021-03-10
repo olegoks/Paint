@@ -27,6 +27,12 @@
     <Filter Include="Canvas">
       <UniqueIdentifier>{de288aa6-2446-4ae1-974f-4c712afd8668}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugin">
+      <UniqueIdentifier>{ae9782a5-e33c-467b-8ab4-e2053b289390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exception">
+      <UniqueIdentifier>{a66e3aee-1400-4f5b-a6c6-ae946f5e089b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +60,15 @@
     </ClInclude>
     <ClInclude Include="MyCanvas.hpp">
       <Filter>Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.hpp">
+      <Filter>Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="FigurePlugin.hpp">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicPlugin.hpp">
+      <Filter>Plugin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,8 @@
 #include <any>
 #include <FormTypes.hpp>
 
+class EXPIMP::std::any;
+
 class EXPIMP Edit {
 private:
 
@@ -15,6 +17,12 @@ public:
 
 	explicit Edit();
 	~Edit()noexcept;
+
+	explicit Edit(const Edit& copy_exception)noexcept = delete;
+	explicit Edit(Edit&& move_exception)noexcept;
+
+	Edit& operator=(Edit&& move_exception)noexcept;
+	Edit& operator=(const Edit& copy_exception)noexcept = delete;
 
 	void SetProcessFunction(ProcessMessage process_message)noexcept;
 	std::string GetText()const;

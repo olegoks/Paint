@@ -9,7 +9,7 @@
 
 #define CALLBACK __stdcall
 
-//#define COMPILING_DLL
+#define COMPILING_DLL
 
 #ifdef COMPILING_DLL
 #define EXPIMP __declspec(dllexport)
