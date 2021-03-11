@@ -4,30 +4,33 @@
 #define BASICPLUGIN_HPP
 
 #include "DLL.hpp"
-#include <string>
+#include "Exception.hpp"
+using PluginException = Exception;
+
 #include <cstdint>
 using std::uint64_t;
 
-enum class PluginType : uint64_t {
-
-	NOTHING = 0,
-	FIGURE,
-	COLOR
-
-};
-
-using GetPluginType	  = PluginType(*)();
-using GetPluginName   = std::string(*)();
-using GetPluginObject = std::any(*)();
-
 #include<filesystem>
 namespace fs = std::filesystem;
-#include <any>
-#include "Exception.hpp"
 
-using PluginException = Exception;
+#include <any>
+#include <string>
 
 class Plugin {
+public:
+
+	enum class Type : uint64_t {
+
+		NOTHING = 0,
+		FIGURE,
+		COLOR
+
+	};
+
+	using GetPluginType = Type(*)();
+	using GetPluginName = std::string(*)();
+	using GetPluginObject = std::any(*)();
+
 private:
 
 	DLL dll_;
@@ -35,12 +38,19 @@ private:
 	GetPluginName get_name_;
 	GetPluginType get_type_;
 	GetPluginObject get_object_;
+	fs::path dll_path_;
 
 protected:
+
+	Type GetType()noexcept {
+
+		return get_type_();
+
+	}
 	
 	std::any GetObjectPointer()noexcept {
 
-		return std::any{ get_object_() };
+		return std::move(get_object_());
 
 	}
 
@@ -50,18 +60,50 @@ public:
 	static const inline std::string image_extension{ u8".bmp" };
 
 	explicit Plugin(const fs::path& plugin_path):
-		dll_{}, get_name_{ nullptr }, get_type_{ nullptr }{
-		
-		if (!fs::exists(plugin_path))
-			throw PluginException{ u8"Plugin path isn't exist." };
+		dll_{}, 
+		get_name_{ nullptr }, 
+		get_type_{ nullptr },
+		get_object_{ nullptr },
+		dll_path_{ plugin_path }{
 
-		dll_ = std::move(DLL{ plugin_path.string() });
+		dll_ = std::move(DLL{ dll_path_.string() });
 	
+	}
+
+	explicit Plugin(const Plugin& copy_plugin)noexcept = delete;
+
+	explicit Plugin(Plugin&& move_plugin)noexcept :
+		Plugin{ fs::path{} } {
+
+
+		std::swap(dll_, move_plugin.dll_);
+		std::swap(get_name_, move_plugin.get_name_);
+		std::swap(get_type_, move_plugin.get_type_);
+		std::swap(get_object_, move_plugin.get_object_);
+		std::swap(dll_path_, move_plugin.dll_path_);
+	}
+
+	Plugin& operator=(const Plugin& copy_plugin)noexcept = delete;
+
+	Plugin& operator=(Plugin&& move_plugin)noexcept {
+
+		if (this == &move_plugin) return *this;
+
+		std::swap(dll_, move_plugin.dll_);
+		std::swap(get_name_, move_plugin.get_name_);
+		std::swap(get_type_, move_plugin.get_type_);
+		std::swap(get_object_, move_plugin.get_object_);
+
+		return *this;
+
 	}
 
 	void Load() {
 
 		try {
+
+			if (!fs::exists(dll_path_))
+				throw PluginException{ u8"Plugin path isn't exist." };
 
 			dll_.Load();
 
@@ -75,12 +117,6 @@ public:
 
 		}
 
-	}
-
-	PluginType GetType()noexcept {
-	
-		return get_type_();
-		
 	}
 
 	std::string GetName()noexcept {

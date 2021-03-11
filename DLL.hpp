@@ -22,7 +22,8 @@ public:
 		SUCCESS = 0,
 		LOADLIBRARYERROR,
 		GETFUNCTIONERROR,
-		DLLNAMESETYET
+		DLLNAMESETYET,
+		NOSETNAME
 
 	};
 
@@ -68,17 +69,48 @@ public:
 	explicit DLL()noexcept:
 		DLL{ std::string{ } }{}
 
-	void Load(std::string&& dll_name = std::string{ }) {
+	DLL(DLL&& move_dll)noexcept :
+		DLL{ std::string{} } {
 
-		if (!dll_name.empty() && !name_.empty())
+		std::swap(name_, move_dll.name_);
+		std::swap(hModule_, move_dll.hModule_);
+
+	}
+
+	explicit DLL(const DLL& copy_dll)noexcept = delete;
+	DLL& operator=(const DLL& copy_dll)noexcept = delete;
+	
+	DLL& operator=(DLL&& move_dll)noexcept {
+
+		if (&move_dll == this)return *this;
+
+		std::swap(name_, move_dll.name_);
+		std::swap(hModule_, move_dll.hModule_);
+
+		return *this;
+
+	}
+
+	void Load() {
+
+		if(name_.empty())
+			throw DLLException{ DLLException::Code::NOSETNAME };
+
+		hModule_ = LoadLibraryA(name_.c_str());
+
+		if (!hModule_)throw
+			DLLException{ DLLException::Code::LOADLIBRARYERROR };
+
+	}
+
+	void Load(std::string&& dll_name) {
+
+		if (!name_.empty())
 			throw DLLException{ DLLException::Code::DLLNAMESETYET };
 
 		name_ = std::move(dll_name);
 
-		hModule_ = LoadLibraryA(name_.c_str());
-
-		if (!hModule_)throw 
-			DLLException{ DLLException::Code::LOADLIBRARYERROR };
+		Load();
 
 	}
 

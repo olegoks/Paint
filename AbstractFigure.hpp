@@ -109,12 +109,4 @@ public:
 
 };
 
-enum class PluginType : uint64_t {
-
-	NOTHING = 0,
-	FIGURE,
-	COLOR
-
-};
-
 #endif //ABSTRACTFIGURE_HPP

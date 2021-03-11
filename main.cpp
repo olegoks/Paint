@@ -1,4 +1,4 @@
-#include "FormsLibrary/FormsLibrary.hpp"
+#include <FormsLibrary.hpp>
 #include <vector>
 #include <filesystem>
 #include <array>
@@ -32,55 +32,62 @@ class MainForm : private MyForm {
 private:
 
 	MyCanvas canvas_;
-	ColorsPanel colors_;
+	//ColorsPanel colors_;
 	FiguresPanel figures_;
 	Color current_color_;
-	Button return_back_;
-	Button return_forward_;
+	//Button return_back_;
+	//Button return_forward_;
 
 public:
 
 	explicit MainForm():
-		MyForm::MyForm{ L"Paint", 100, 100, 1000, 800 },
+		MyForm::MyForm{ L"Paint", 100, 100, 500, 400 },
 		canvas_{ Handle(), 100 , 100, 400, 300 },
-		colors_{ Handle() },
-		figures_{ Handle(), 0, 100, 100, 300 }{
+		figures_{ Handle(), 0, 100, 100, 300 }//,
+		//colors_{ Handle() }
+		, current_color_{ 0, 0, 0 }
+	{
 
-		return_back_.ChangeSize(100, 80);
-		return_back_.ChangePosition(0, 0);
-		return_back_.Image(L"Left.bmp");
-		return_back_.Create(Handle());
-		return_back_.Show();
-		return_back_.SetProcessFunction([this](Message& message)noexcept->bool {
-			
-			if (message.GetAction() == Action::ButtonClicked) {
+		//return_back_.ChangeSize(100, 80);
+		//return_back_.ChangePosition(0, 0);
+		//return_back_.Create(Handle());
+		//
+		//return_back_.Show();
+		//return_back_.Image(L"Left.bmp");
 
-				canvas_.ReturnBack();
+		//return_back_.SetProcessFunction([this](Message& message)noexcept->bool {
+		//	
+		//	if (message.GetAction() == Action::ButtonClicked) {
 
-				return true;
+		//		canvas_.ReturnBack();
 
-			}
+		//		return true;
 
-			return false;
-			});
+		//	}
 
-		return_forward_.ChangeSize(100, 80);
-		return_forward_.ChangePosition(100, 0);
-		return_forward_.Image(L"Right.bmp");
-		return_forward_.Create(Handle());
-		return_forward_.Show();
-		return_forward_.SetProcessFunction([this](Message& message)noexcept->bool {
+		//	return false;
+		//	});
 
-			if (message.GetAction() == Action::ButtonClicked) {
+		//return_forward_.ChangeSize(100, 80);
+		//return_forward_.ChangePosition(100, 0);
+		//return_forward_.Create(Handle());
+		//return_forward_.Image(L"Right.bmp");
+		//return_forward_.Show();
+		//
 
-				canvas_.ReturnForward();
+		//return_forward_.SetProcessFunction([this](Message& message)noexcept->bool {
+		//
 
-				return true;
+		//	if (message.GetAction() == Action::ButtonClicked) {
 
-			}
+		//		canvas_.ReturnForward();
 
-			return false;
-			});
+		//		return true;
+
+		//	}
+
+		//	return false;
+		//	});
 
 		canvas_.InitProcessActionFunction([this](MyCanvas& canvas, Message& message)->bool {
 			
@@ -91,7 +98,7 @@ public:
 				uint64_t x = message.GetX();
 				uint64_t y = message.GetY();
 
-				std::unique_ptr<AbstractFigure> figure_to_draw = figures_.GetFigure();
+				AbstractFigure* figure_to_draw = figures_.GetFigure();
 				
 				if (figure_to_draw == nullptr) {
 					
@@ -101,7 +108,10 @@ public:
 				}
 
 				figure_to_draw->SetParametrs(FigureInfo{ Coordinats{ x, y }, Coordinats{ x + 100, y + 100 }, current_color_ });
-				canvas.DrawFigure(figure_to_draw.release());
+				
+				const uint64_t width = canvas.GetWidth();
+				const uint64_t height = canvas.GetHeight();
+				canvas.DrawFigure(figure_to_draw);
 				canvas.Flush();
 
 				return true;
@@ -111,6 +121,7 @@ public:
 			return false;
 
 			});
+
 	}
 
 	void Run()noexcept(false) {

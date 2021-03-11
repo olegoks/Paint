@@ -40,9 +40,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp">
-      <Filter>Form</Filter>
-    </ClInclude>
     <ClInclude Include="AbstractFigure.hpp">
       <Filter>Figure</Filter>
     </ClInclude>
@@ -69,6 +66,9 @@
     </ClInclude>
     <ClInclude Include="BasicPlugin.hpp">
       <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp">
+      <Filter>Form</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

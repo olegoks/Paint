@@ -56,6 +56,9 @@ public:
 
 	}
 
+	const uint64_t GetWidth()const noexcept { return Canvas::GetWidth(); }
+	const uint64_t GetHeight()const noexcept { return Canvas::GetHeight(); }
+
 	void ReturnBack() {
 
 		//&&

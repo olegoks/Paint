@@ -67,6 +67,9 @@ public:
 
 	virtual void Execute(Canvas& canvas)const override {
 	
+		const uint64_t width = canvas.GetWidth();
+		const uint64_t height = canvas.GetHeight();
+
 		canvas.Line(begin_.X(), begin_.Y(), end_.X(), end_.Y(), color_);
 
 	}

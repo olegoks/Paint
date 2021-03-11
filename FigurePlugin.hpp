@@ -11,20 +11,18 @@ class FigurePlugin : public Plugin {
 private:
 public:
 
-	explicit FigurePlugin(const std::filesystem::path plugin_path) :
+	explicit FigurePlugin(const fs::path& plugin_path) :
 		Plugin{ plugin_path } {}
 
-	std::unique_ptr<AbstractFigure> GetFigureObjectPointer() {
+	AbstractFigure* GetFigureObjectPointer() {
 
-		using namespace std;
-
-		any ptr = Plugin::GetObjectPointer();
+		std::any ptr = Plugin::GetObjectPointer();
 
 		try {
+
+			return std::any_cast<AbstractFigure*>(ptr);
 		
-			return make_unique<AbstractFigure>(any_cast<AbstractFigure*>(ptr));
-		
-		} catch (const bad_any_cast& cast_error) {
+		} catch (const std::bad_any_cast& cast_error) {
 
 			throw PluginException{ u8"Pointer casting error." };
 
