@@ -24,14 +24,14 @@
     <Filter Include="CanvasCommand">
       <UniqueIdentifier>{38ddc767-80af-4c2b-a749-31076b7e8dbb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Canvas">
-      <UniqueIdentifier>{de288aa6-2446-4ae1-974f-4c712afd8668}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Plugin">
       <UniqueIdentifier>{ae9782a5-e33c-467b-8ab4-e2053b289390}</UniqueIdentifier>
     </Filter>
     <Filter Include="Exception">
       <UniqueIdentifier>{a66e3aee-1400-4f5b-a6c6-ae946f5e089b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCanvas">
+      <UniqueIdentifier>{de288aa6-2446-4ae1-974f-4c712afd8668}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,35 +40,35 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractFigure.hpp">
-      <Filter>Figure</Filter>
-    </ClInclude>
-    <ClInclude Include="DLL.hpp">
-      <Filter>DLL</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorsPanel.hpp">
-      <Filter>ColorsPanel</Filter>
-    </ClInclude>
-    <ClInclude Include="FiguresPanel.hpp">
-      <Filter>FiguresPanel</Filter>
-    </ClInclude>
-    <ClInclude Include="CanvasCommand.hpp">
-      <Filter>CanvasCommand</Filter>
-    </ClInclude>
-    <ClInclude Include="MyCanvas.hpp">
-      <Filter>Canvas</Filter>
-    </ClInclude>
     <ClInclude Include="Exception.hpp">
       <Filter>Exception</Filter>
     </ClInclude>
-    <ClInclude Include="FigurePlugin.hpp">
-      <Filter>Plugin</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicPlugin.hpp">
-      <Filter>Plugin</Filter>
-    </ClInclude>
     <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp">
       <Filter>Form</Filter>
+    </ClInclude>
+    <ClInclude Include="DLL\DLL.hpp">
+      <Filter>DLL</Filter>
+    </ClInclude>
+    <ClInclude Include="Panels\ColorsPanel\ColorsPanel.hpp">
+      <Filter>ColorsPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasCommand\CanvasCommand.hpp">
+      <Filter>CanvasCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="PaintCanvas\MyCanvas.hpp">
+      <Filter>MyCanvas</Filter>
+    </ClInclude>
+    <ClInclude Include="AsbtractFigure\AbstractFigure.hpp">
+      <Filter>Figure</Filter>
+    </ClInclude>
+    <ClInclude Include="Panels\FiguresPanel\FiguresPanel.hpp">
+      <Filter>FiguresPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugin\BasicPlugin.hpp">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugin\FigurePlugin.hpp">
+      <Filter>Plugin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

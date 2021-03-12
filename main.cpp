@@ -91,6 +91,12 @@ public:
 			static Coordinats last_click{ 0, 0 };
 
 			switch (message.GetAction()) {
+			case Action::Repaint:
+
+				canvas.Flush();
+
+				return true;
+
 			case Action::LMouseDown: {
 
 				last_click = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY()};
