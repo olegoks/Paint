@@ -22,21 +22,26 @@ private:
 
 	void ClearNotDrawnFigures()noexcept {
 
-		if (figures_.empty() || pointer_ == figures_.end())return;
+		if (pointer_ == figures_.end() - 1)return;
 
-		for (auto it = pointer_ + 1; it != figures_.end(); ++it)
-			delete* it;
+		std::for_each(pointer_ + 1, figures_.end(), [](AbstractFigure* figure_ptr)noexcept->void{
+			
+			delete figure_ptr;
+			
+			});
 
 		pointer_ = figures_.erase(++pointer_, figures_.end());
 
 	}
 
+
+
 public:
 
 	explicit MyCanvas(const HWND parent_hWnd, const uint64_t x, const uint64_t y, const uint64_t width, const uint64_t height)noexcept :
 		Canvas{ },
-		figures_{},
-		pointer_{ figures_.end() },
+		figures_{ nullptr },
+		pointer_{ figures_.begin() },
 		fill_color_{ Color{ 255, 255, 255 } } {
 
 		Canvas::ChangeSize(width, height);
@@ -62,13 +67,13 @@ public:
 	void ReturnBack() {
 
 		//&&
-		if (figures_.empty() || figures_.end() == pointer_)return;
+		if (*pointer_ == nullptr)return;
 
 		Canvas::Fill(fill_color_);
-	
-		for (auto it = figures_.begin(); it != pointer_; ++it)
+
+		for (auto it = figures_.begin() + 1; it != pointer_; ++it)
 			(*it)->Draw(*dynamic_cast<Canvas*>(this));
-		
+
 		--pointer_;
 
 		Canvas::Flush();

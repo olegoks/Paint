@@ -10,8 +10,8 @@ using std::uint64_t;
 class Coordinats final {
 private:
 
-	const uint64_t x_;
-	const uint64_t y_;
+	uint64_t x_;
+	uint64_t y_;
 
 public:
 
@@ -20,6 +20,16 @@ public:
 
 	explicit Coordinats()noexcept :
 		Coordinats{ 0, 0 } {}
+
+	Coordinats& operator=(const Coordinats& copy_coordinats)noexcept {
+
+		if (this == &copy_coordinats) return *this;
+
+		x_ = copy_coordinats.x_;
+		y_ = copy_coordinats.y_;
+
+		return *this;
+	}
 
 	~Coordinats()noexcept = default;
 
@@ -67,14 +77,31 @@ public:
 
 	virtual void Execute(Canvas& canvas)const override {
 	
-		const uint64_t width = canvas.GetWidth();
-		const uint64_t height = canvas.GetHeight();
-
 		canvas.Line(begin_.X(), begin_.Y(), end_.X(), end_.Y(), color_);
 
 	}
 
 	~SolidLineCanvasCommand()noexcept = default;
+
+};
+
+class FillCanvasCommand : public AbstractCanvasCommand {
+private:
+
+	Color color_;
+
+public:
+
+	explicit FillCanvasCommand(const Color& color)noexcept :
+		AbstractCanvasCommand{ sizeof FillCanvasCommand, CommandType::FILL }, color_{ color }{}
+
+	virtual void Execute(Canvas& canvas)const override {
+
+		canvas.Fill(color_);
+
+	}
+
+	~FillCanvasCommand()noexcept = default;
 
 };
 
@@ -96,25 +123,5 @@ public:
 	}
 
 };
-
-class FillCanvasCommand : public AbstractCanvasCommand {
-private:
-
-	Color color_;
-
-public:
-
-	explicit FillCanvasCommand(const Color& color)noexcept :
-		AbstractCanvasCommand{ sizeof FillCanvasCommand, CommandType::FILL },
-		color_{ color }{}
-
-	void Execute(Canvas& canvas)const noexcept {
-
-		canvas.Fill(color_);
-
-	}
-
-};
-
 
 #endif CANVASCOMMAND_HPP

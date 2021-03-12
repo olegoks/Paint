@@ -23,7 +23,8 @@ public:
 
 		NOTHING = 0,
 		FIGURE,
-		COLOR
+		COLOR,
+		COMMAND
 
 	};
 

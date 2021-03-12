@@ -9,6 +9,7 @@ using std::uint64_t;
 #include <string>
 #include <Button.hpp>
 #include <functional>
+#include <optional>
 
 //using ProcessFigureSelect = std::function<void(AbstractFigure*)>;
 
@@ -102,8 +103,6 @@ private:
 
 		}
 
-		~FigureButton()noexcept = default;
-
 		inline void SetProcessButtonClick(ProcessFigureSelection process_selection)noexcept {
 
 			process_selection_ = process_selection;
@@ -166,9 +165,11 @@ public:
 		fs::path plugins_path{ fs::current_path() / u8"plugins" };
 
 		LoadPlugins(plugins_path);
+		
+		if (buttons_.empty())return;
 
 		uint64_t button_height = height / buttons_.size();
-		if (button_height > 80)button_height = 80;
+		if (button_height > 60)button_height = 60;
 		uint64_t button_offset = y;
 
 		for (auto& button : buttons_) {
@@ -181,9 +182,12 @@ public:
 
 	}
 
-	[[nodiscard]] AbstractFigure* GetFigure()noexcept {
+	[[nodiscard]] std::optional<AbstractFigure*>GetFigure()noexcept {
 
-		return current_plugin_->GetFigureObjectPointer();
+		if(current_plugin_ != nullptr)
+			return current_plugin_->GetFigureObjectPointer();
+
+		return std::optional<AbstractFigure*>{};
 
 	}
 

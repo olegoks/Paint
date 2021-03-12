@@ -68,14 +68,6 @@ public:
 
 };
 
-class SolidRectangleFigure : public AbstractFigure {
-private:
-
-
-public:
-
-};
-
 #include <array>
 
 class RectangleFigure : public AbstractFigure {

@@ -35,89 +35,126 @@ private:
 	//ColorsPanel colors_;
 	FiguresPanel figures_;
 	Color current_color_;
-	//Button return_back_;
-	//Button return_forward_;
+	Button return_back_;
+	Button return_forward_;
 
 public:
 
 	explicit MainForm():
-		MyForm::MyForm{ L"Paint", 100, 100, 500, 400 },
-		canvas_{ Handle(), 100 , 100, 400, 300 },
-		figures_{ Handle(), 0, 100, 100, 300 }//,
-		//colors_{ Handle() }
-		, current_color_{ 0, 0, 0 }
-	{
+		MyForm::MyForm{ L"Paint", 100, 100, 560, 420 + 40},
+		canvas_{ Handle(), 80, 60, 400, 300 },
+		figures_{ Handle(), 0, 0, 80, 300 },
+		current_color_{ 0, 0, 0 }{
 
-		//return_back_.ChangeSize(100, 80);
-		//return_back_.ChangePosition(0, 0);
-		//return_back_.Create(Handle());
-		//
-		//return_back_.Show();
-		//return_back_.Image(L"Left.bmp");
+		return_back_.ChangePosition(80, 0);
+		return_back_.ChangeSize(80, 60);
+		return_back_.SetProcessFunction([this](Message& message)noexcept->bool {
+			
+			if (message.GetAction() == Action::ButtonClicked) {
 
-		//return_back_.SetProcessFunction([this](Message& message)noexcept->bool {
-		//	
-		//	if (message.GetAction() == Action::ButtonClicked) {
+				canvas_.ReturnBack();
+				
+				return true;
 
-		//		canvas_.ReturnBack();
+			}
 
-		//		return true;
+			return false;
 
-		//	}
+			});
 
-		//	return false;
-		//	});
+		return_back_.Create(Handle());
+		return_back_.Image(L"Left.bmp");
+		return_back_.Show();
 
-		//return_forward_.ChangeSize(100, 80);
-		//return_forward_.ChangePosition(100, 0);
-		//return_forward_.Create(Handle());
-		//return_forward_.Image(L"Right.bmp");
-		//return_forward_.Show();
-		//
+		return_forward_.ChangePosition(160, 0);
+		return_forward_.ChangeSize(80, 60);
+		return_forward_.SetProcessFunction([this](Message& message)noexcept->bool {
 
-		//return_forward_.SetProcessFunction([this](Message& message)noexcept->bool {
-		//
+			if (message.GetAction() == Action::ButtonClicked) {
 
-		//	if (message.GetAction() == Action::ButtonClicked) {
+				canvas_.ReturnForward();
 
-		//		canvas_.ReturnForward();
+				return true;
 
-		//		return true;
+			}
 
-		//	}
+			return false;
 
-		//	return false;
-		//	});
+			});
+
+		return_forward_.Create(Handle());
+		return_forward_.Image(L"Right.bmp");
+		return_forward_.Show();
 
 		canvas_.InitProcessActionFunction([this](MyCanvas& canvas, Message& message)->bool {
 			
 			static Coordinats last_click{ 0, 0 };
 
-			if (message.GetAction() == Action::LMouseDown) {
+			switch (message.GetAction()) {
+			case Action::LMouseDown: {
+
+				last_click = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY()};
+
+				std::optional<AbstractFigure*> maybe_ptr = figures_.GetFigure();
+
+				if (!maybe_ptr.has_value()) {
+
+					MessageBoxA(Handle(), u8"Please, select figure!", u8"Notification!", MB_OK | MB_ICONWARNING);
+
+					return true;
+
+				}
+
+				AbstractFigure* figure_to_draw = maybe_ptr.value();
 
 				uint64_t x = message.GetX();
 				uint64_t y = message.GetY();
 
-				AbstractFigure* figure_to_draw = figures_.GetFigure();
-				
-				if (figure_to_draw == nullptr) {
-					
-					MessageBoxA(Handle(), u8"Please, select figure.", u8"Notification!", MB_OK);
-				
-					return true;
-				}
-
-				figure_to_draw->SetParametrs(FigureInfo{ Coordinats{ x, y }, Coordinats{ x + 100, y + 100 }, current_color_ });
-				
-				const uint64_t width = canvas.GetWidth();
-				const uint64_t height = canvas.GetHeight();
+				figure_to_draw->SetParametrs(FigureInfo{ Coordinats{ last_click.X(), last_click.Y() }, Coordinats{ x + 1, y + 1 }, current_color_ });
 				canvas.DrawFigure(figure_to_draw);
 				canvas.Flush();
 
 				return true;
-
+				[[fallthrough]];
 			}
-			
+
+			case Action::MouseMove: {
+
+				if (!last_click.X() && !last_click.Y())return true;
+
+				std::optional<AbstractFigure*> maybe_ptr = figures_.GetFigure();
+
+				if (!maybe_ptr.has_value()) {
+
+					MessageBoxA(Handle(), u8"Please, select figure!", u8"Notification!", MB_OK | MB_ICONWARNING);
+
+					return true;
+
+				}
+
+				AbstractFigure* figure_to_draw = maybe_ptr.value();
+
+				uint64_t x = message.GetX();
+				uint64_t y = message.GetY();
+
+				figure_to_draw->SetParametrs(FigureInfo{ Coordinats{ last_click.X(), last_click.Y() }, Coordinats{ x, y }, current_color_ });
+				canvas.ReturnBack();
+				canvas.DrawFigure(figure_to_draw);
+				canvas.Flush();
+
+				return true;
+				[[fallthrough]];
+			}
+
+			case Action::LMouseUp: {
+
+				last_click = Coordinats{ 0, 0 };
+
+				return true;
+				[[fallthrough]];
+			}
+			};
+
 			return false;
 
 			});
