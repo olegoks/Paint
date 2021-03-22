@@ -1,74 +1,87 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Исходные файлы">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Form">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Figure">
-      <UniqueIdentifier>{4fcf4449-edfa-4b45-b3b3-89f8abeb723f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DLL">
-      <UniqueIdentifier>{5720087b-79c2-47bd-ae10-b18e8141e068}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ColorsPanel">
       <UniqueIdentifier>{8b0ab5b4-561c-4fbe-a30a-f471ae9b5480}</UniqueIdentifier>
     </Filter>
     <Filter Include="FiguresPanel">
       <UniqueIdentifier>{2e10396d-e9f7-40ba-ac4f-1a3d58a5a02e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CanvasCommand">
-      <UniqueIdentifier>{38ddc767-80af-4c2b-a749-31076b7e8dbb}</UniqueIdentifier>
+    <Filter Include="PaintForm">
+      <UniqueIdentifier>{7cd3f315-d0e4-4cce-a963-31bc101045a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Plugin">
-      <UniqueIdentifier>{ae9782a5-e33c-467b-8ab4-e2053b289390}</UniqueIdentifier>
+    <Filter Include="FormsLibrary">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Exception">
-      <UniqueIdentifier>{a66e3aee-1400-4f5b-a6c6-ae946f5e089b}</UniqueIdentifier>
+    <Filter Include="EntryPoint">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="MyCanvas">
-      <UniqueIdentifier>{de288aa6-2446-4ae1-974f-4c712afd8668}</UniqueIdentifier>
+    <Filter Include="PaintCanvas">
+      <UniqueIdentifier>{bfc71325-fe39-4f10-b328-3543148fb681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PaintCanvas\AbstractFigure">
+      <UniqueIdentifier>{266a9b9e-2860-4f5e-bd68-b81e85f7d331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PaintCanvas\Plugin">
+      <UniqueIdentifier>{7e5ca81b-f8b9-4959-8378-5a37961093d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PluginsManager">
+      <UniqueIdentifier>{5dc42c2e-7f18-4889-a81a-8fb42cc75ea5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>EntryPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="PaintCanvas\PaintCanvas.cpp">
+      <Filter>PaintCanvas</Filter>
+    </ClCompile>
+    <ClCompile Include="PaintCanvas\AbstractFigure.cpp">
+      <Filter>PaintCanvas\AbstractFigure</Filter>
+    </ClCompile>
+    <ClCompile Include="PaintCanvas\Types.cpp">
+      <Filter>PaintCanvas</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginsManager\PluginsManager.cpp">
+      <Filter>PluginsManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Exception.hpp">
-      <Filter>Exception</Filter>
-    </ClInclude>
     <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp">
-      <Filter>Form</Filter>
-    </ClInclude>
-    <ClInclude Include="DLL\DLL.hpp">
-      <Filter>DLL</Filter>
+      <Filter>FormsLibrary</Filter>
     </ClInclude>
     <ClInclude Include="Panels\ColorsPanel\ColorsPanel.hpp">
       <Filter>ColorsPanel</Filter>
     </ClInclude>
-    <ClInclude Include="CanvasCommand\CanvasCommand.hpp">
-      <Filter>CanvasCommand</Filter>
-    </ClInclude>
-    <ClInclude Include="PaintCanvas\MyCanvas.hpp">
-      <Filter>MyCanvas</Filter>
-    </ClInclude>
-    <ClInclude Include="AsbtractFigure\AbstractFigure.hpp">
-      <Filter>Figure</Filter>
-    </ClInclude>
     <ClInclude Include="Panels\FiguresPanel\FiguresPanel.hpp">
       <Filter>FiguresPanel</Filter>
     </ClInclude>
-    <ClInclude Include="Plugin\BasicPlugin.hpp">
-      <Filter>Plugin</Filter>
+    <ClInclude Include="PaintForm.hpp">
+      <Filter>PaintForm</Filter>
     </ClInclude>
-    <ClInclude Include="Plugin\FigurePlugin.hpp">
-      <Filter>Plugin</Filter>
+    <ClInclude Include="PaintCanvas\PaintCanvas.hpp">
+      <Filter>PaintCanvas</Filter>
+    </ClInclude>
+    <ClInclude Include="PaintCanvas\AbstractFigure.hpp">
+      <Filter>PaintCanvas\AbstractFigure</Filter>
+    </ClInclude>
+    <ClInclude Include="PaintCanvas\DLL.hpp">
+      <Filter>PaintCanvas\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="PaintCanvas\Exception.hpp" />
+    <ClInclude Include="PaintCanvas\Plugin.hpp">
+      <Filter>PaintCanvas\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="PaintCanvas\Types.hpp">
+      <Filter>PaintCanvas</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginsManager\PluginsManager.hpp">
+      <Filter>PluginsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PaintCanvas\PaintFigure.hpp">
+      <Filter>PaintCanvas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

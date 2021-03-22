@@ -6,189 +6,91 @@
 using std::uint64_t;
 
 #include <vector>
+using std::vector;
+
 #include <string>
 #include <Button.hpp>
 #include <functional>
 #include <optional>
-
-//using ProcessFigureSelect = std::function<void(AbstractFigure*)>;
-
+#include <iostream>
+#include <filesystem>
 namespace fs = std::filesystem;
-#include "FigurePlugin.hpp"
+
+#include <memory>
+using std::shared_ptr;
+using std::weak_ptr;
+
+#include "PluginsManager.hpp"
 
 class FiguresPanel {
-private:
-
-	class FigureButton final : public Button {
-	public:
-
-		using ProcessFigureSelection = std::function<void(FigurePlugin& selected_plugin)>;
-
-	private:
-
-		FigurePlugin plugin_;
-		ProcessFigureSelection process_selection_;
-
-	private:
-
-		using Button::Create;
-		using Button::Button;
-		using Button::Destroy;
-		using Button::SetProcessFunction;
-		using Button::Show;
-		using Button::ChangeStyle;
-		
-	public:
-
-		explicit FigureButton(const HWND parent_hWnd, FigurePlugin&& plugin):
-			Button::Button{}, plugin_{ std::move(plugin) },
-			process_selection_{ [](FigurePlugin& selected_plugin)noexcept->void {} }{
-
-			Button::Create(parent_hWnd);
-			Button::Show(SW_SHOW);
-
-		}
-
-		explicit FigureButton(const FigureButton& copy_button)noexcept = delete;
-
-		explicit FigureButton(FigureButton&& move_button)noexcept:
-			Button::Button{ std::move(move_button) },
-			plugin_{ fs::path{} },
-			process_selection_{ [](FigurePlugin& selected_plugin)noexcept->void {} }{
-
-			std::swap(plugin_, move_button.plugin_);
-			std::swap(process_selection_, move_button.process_selection_);
-
-			Button::SetProcessFunction([this](Message& message)noexcept->bool {
-
-				if (message.GetAction() == Action::ButtonClicked) {
-
-					process_selection_(plugin_);
-
-					return true;
-
-				}
-
-				return false;
-
-				});
-
-		}
-
-		FigureButton& operator=(const FigureButton& copy_button)noexcept = delete;
-
-		FigureButton& operator=(FigureButton&& move_button)noexcept{
-			
-			if (this == &move_button)return *this;
-
-			Button::operator=(std::move(move_button));
-			std::swap(plugin_, move_button.plugin_);
-			std::swap(process_selection_, move_button.process_selection_);
-
-			Button::SetProcessFunction([this](Message& message)noexcept->bool {
-
-				if (message.GetAction() == Action::ButtonClicked) {
-
-					process_selection_(plugin_);
-
-					return true;
-
-				}
-
-				return false;
-
-				});
-
-			return *this;
-
-		}
-
-		inline void SetProcessButtonClick(ProcessFigureSelection process_selection)noexcept {
-
-			process_selection_ = process_selection;
-
-		}
-
-	};
-
-	FigurePlugin* current_plugin_;
-	const HWND parent_hWnd_;
-	std::vector<FigureButton> buttons_;
-
-private:
-
-	void LoadPlugins(const fs::path& plugins_path) noexcept{
-
-		if (!exists(plugins_path)) return;
-
-		for (auto& plugin : fs::directory_iterator{ plugins_path }) {
-
-			fs::path plugin_path = plugin.path();
-			const std::string file_extention = plugin_path.extension().string();
-
-			if (file_extention == FigurePlugin::extension) {
-
-				try {
-
-					FigurePlugin plugin{ plugin_path };
-					plugin.Load();
-					std::string pluging_name = std::move(plugin.GetName()) ;
-					
-					std::string image_name{ pluging_name + FigurePlugin::image_extension };
-					fs::path image_path{ plugins_path / image_name };
-
-					buttons_.push_back(FigureButton{ parent_hWnd_, std::move(plugin) });
-					FigureButton& button = buttons_.back();
-					button.Image(image_path);
-
-					button.SetProcessButtonClick([this](FigurePlugin& plugin)noexcept->void {
-
-						current_plugin_ = &plugin;
-
-						});
-
-				} catch (const PluginException& exception) { continue; }
-
-			}
-
-		}
-
-	}
 
 public:
 
-	explicit FiguresPanel(const HWND hWnd, const uint64_t x, const uint64_t y, const uint64_t width, const uint64_t height):
-		current_plugin_{ nullptr },
+	using ProcessFigureSelection = std::function<void(const Plugin& selected_plugin)>;
+
+private:
+
+	const HWND parent_hWnd_;
+	vector<Button> buttons_;
+
+	ProcessFigureSelection process_selection_;
+	Position position_;
+	Size size_;
+
+public:
+
+	explicit FiguresPanel(const HWND hWnd, Position position, Size size):
 		parent_hWnd_{ hWnd },
-		buttons_{ }{
+		buttons_{ },
+		process_selection_{ [](const Plugin& plugin)noexcept->void { } },
+		position_{ position },
+		size_{ size }{
 
-		fs::path plugins_path{ fs::current_path() / u8"plugins" };
+	}
 
-		LoadPlugins(plugins_path);
-		
-		if (buttons_.empty())return;
+	void Show()noexcept {
 
-		uint64_t button_height = height / buttons_.size();
-		if (button_height > 60)button_height = 60;
-		uint64_t button_offset = y;
+		PluginsManager& manager = PluginsManager::Access();
 
-		for (auto& button : buttons_) {
+		uint64_t button_height = size_.Height() / manager.GetLoadedPluginsNumber();
+		uint64_t button_offset = position_.Y();
 
-			button.ChangeSize(width, button_height);
-			button.ChangePosition(x, button_offset);
+		const uint64_t buttons_number = manager.GetLoadedPluginsNumber();
+		buttons_.reserve(buttons_number);
+		buttons_.shrink_to_fit();
+
+		for (auto& plugin : manager.GetAllLoadedPlugins()) {
+
+			Button button{};
+			button.ChangeSize(size_.Width(), button_height);
+			button.ChangePosition(position_.X(), button_offset);
+
+			button.SetProcessFunction([&plugin, this](Message& message)noexcept->bool {
+
+				process_selection_(plugin);
+
+				return false;
+
+				});
+
+			button.Create(parent_hWnd_);
+
+			using namespace std::string_literals;
+
+			button.Image(manager.GetPluginsPath() / (string{ plugin.GetName() } + u8".bmp"s));
+			button.Show();
+
+			buttons_.push_back(std::move(button));
 			button_offset += button_height;
 
 		}
 
 	}
 
-	[[nodiscard]] std::optional<AbstractFigure*>GetFigure()noexcept {
-
-		if(current_plugin_ != nullptr)
-			return current_plugin_->GetFigureObjectPointer();
-
-		return std::optional<AbstractFigure*>{};
-
+	void ChangeProcessFigureSelectionFunction(ProcessFigureSelection process_selection)noexcept{
+	
+		process_selection_ = process_selection;
+	
 	}
 
 };

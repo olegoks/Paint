@@ -92,11 +92,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\Paint\PluginsManager\;D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <Optimization>MinSpace</Optimization>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <Optimization>Custom</Optimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -115,10 +115,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <Optimization>MinSpace</Optimization>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,11 +136,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\Paint\PluginsManager\;D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <Optimization>MinSpace</Optimization>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <Optimization>Custom</Optimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,10 +159,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <Optimization>MinSpace</Optimization>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,18 +176,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PaintCanvas\AbstractFigure.cpp" />
+    <ClCompile Include="PaintCanvas\PaintCanvas.cpp" />
+    <ClCompile Include="PaintCanvas\Types.cpp" />
+    <ClCompile Include="PluginsManager\PluginsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\WinApiFormLibrary\Library\FormsLibrary.hpp" />
-    <ClInclude Include="AsbtractFigure\AbstractFigure.hpp" />
-    <ClInclude Include="CanvasCommand\CanvasCommand.hpp" />
-    <ClInclude Include="DLL\DLL.hpp" />
-    <ClInclude Include="Exception.hpp" />
-    <ClInclude Include="PaintCanvas\MyCanvas.hpp" />
+    <ClInclude Include="PaintCanvas\AbstractFigure.hpp" />
+    <ClInclude Include="PaintCanvas\PaintFigure.hpp" />
+    <ClInclude Include="PaintCanvas\Plugin.hpp" />
+    <ClInclude Include="PaintCanvas\DLL.hpp" />
+    <ClInclude Include="PaintCanvas\Exception.hpp" />
+    <ClInclude Include="PaintCanvas\PaintCanvas.hpp" />
+    <ClInclude Include="PaintCanvas\Types.hpp" />
+    <ClInclude Include="PaintForm.hpp" />
     <ClInclude Include="Panels\ColorsPanel\ColorsPanel.hpp" />
     <ClInclude Include="Panels\FiguresPanel\FiguresPanel.hpp" />
-    <ClInclude Include="Plugin\BasicPlugin.hpp" />
-    <ClInclude Include="Plugin\FigurePlugin.hpp" />
+    <ClInclude Include="PluginsManager\PluginsManager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
