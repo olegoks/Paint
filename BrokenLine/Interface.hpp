@@ -18,7 +18,8 @@ private:
 	
 	Coordinats start_;
 	Coordinats end_;
-	Color border_color_;
+	Color color_;
+	uint64_t line_thickness_;
 
 public:
 

@@ -24,11 +24,14 @@
     <Filter Include="PaintCanvas\AbstractFigure">
       <UniqueIdentifier>{266a9b9e-2860-4f5e-bd68-b81e85f7d331}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PaintCanvas\Plugin">
-      <UniqueIdentifier>{7e5ca81b-f8b9-4959-8378-5a37961093d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PluginsManager">
       <UniqueIdentifier>{5dc42c2e-7f18-4889-a81a-8fb42cc75ea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PluginsManager\Plugin">
+      <UniqueIdentifier>{7e5ca81b-f8b9-4959-8378-5a37961093d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LineThicknessPanel">
+      <UniqueIdentifier>{bca329b8-c9b2-4ef7-a507-f017b69515fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,11 +71,11 @@
       <Filter>PaintCanvas\AbstractFigure</Filter>
     </ClInclude>
     <ClInclude Include="PaintCanvas\DLL.hpp">
-      <Filter>PaintCanvas\Plugin</Filter>
+      <Filter>PluginsManager\Plugin</Filter>
     </ClInclude>
     <ClInclude Include="PaintCanvas\Exception.hpp" />
     <ClInclude Include="PaintCanvas\Plugin.hpp">
-      <Filter>PaintCanvas\Plugin</Filter>
+      <Filter>PluginsManager\Plugin</Filter>
     </ClInclude>
     <ClInclude Include="PaintCanvas\Types.hpp">
       <Filter>PaintCanvas</Filter>
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="PaintCanvas\PaintFigure.hpp">
       <Filter>PaintCanvas</Filter>
+    </ClInclude>
+    <ClInclude Include="LineThicknessPanel.hpp">
+      <Filter>LineThicknessPanel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -36,6 +36,7 @@ private:
 	ProcessFigureSelection process_selection_;
 	Position position_;
 	Size size_;
+	static const inline std::uint64_t max_button_height = 60;
 
 public:
 
@@ -52,22 +53,37 @@ public:
 
 		PluginsManager& manager = PluginsManager::Access();
 
-		uint64_t button_height = size_.Height() / manager.GetLoadedPluginsNumber();
-		uint64_t button_offset = position_.Y();
+		//Number of buttons equals number of plugins
+		const uint64_t plugins_number = manager.LoadedPluginsNumber();
+		const uint64_t buttons_number = plugins_number;
 
-		const uint64_t buttons_number = manager.GetLoadedPluginsNumber();
+		uint64_t button_height = FiguresPanel::size_.Height() / buttons_number;
+
+		if (button_height > max_button_height)
+			button_height = max_button_height;
+
+		uint64_t button_offset = FiguresPanel::position_.Y();
+
 		buttons_.reserve(buttons_number);
 		buttons_.shrink_to_fit();
 
-		for (auto& plugin : manager.GetAllLoadedPlugins()) {
+		for (auto& [name, plugin] : manager.AllPlugins()) {
 
 			Button button{};
 			button.ChangeSize(size_.Width(), button_height);
 			button.ChangePosition(position_.X(), button_offset);
+			
+			const Plugin& selected_plugin = plugin;
+			
+			button.SetProcessFunction([&selected_plugin, this](Message& message)noexcept->bool {
+				
+				if (message.GetAction() == Action::ButtonClicked) {
+				
+					process_selection_(selected_plugin);
 
-			button.SetProcessFunction([&plugin, this](Message& message)noexcept->bool {
+					return true;
 
-				process_selection_(plugin);
+				}
 
 				return false;
 
@@ -77,7 +93,7 @@ public:
 
 			using namespace std::string_literals;
 
-			button.Image(manager.GetPluginsPath() / (string{ plugin.GetName() } + u8".bmp"s));
+			button.Image(PluginsManager::plugins_path_ / (string{ plugin.GetName() } + Plugin::image_extension));
 			button.Show();
 
 			buttons_.push_back(std::move(button));

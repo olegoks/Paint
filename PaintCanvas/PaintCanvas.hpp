@@ -12,7 +12,6 @@ namespace fs = std::filesystem;
 #include <Canvas.hpp>
 
 #include "PluginsManager.hpp"
-#include "AbstractFigure.hpp"
 #include "Exception.hpp"
 #include "PaintFigure.hpp"
 

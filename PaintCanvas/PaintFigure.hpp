@@ -3,7 +3,8 @@
 #include "PaintCanvas.hpp"
 
 #include <memory>
-#include <vector>
+#include <list>
+using std::list;
 
 #include "Exception.hpp"
 using FigureException = Exception;
@@ -12,21 +13,24 @@ class Figure final {
 private:
 
 	shared_ptr<AbstractFigure> figure_ptr_;
-	vector<UIInfo> ui_info_;
+	std::vector<UIInfo> ui_info_;
 	signed int pointer_;
 
 public:
 
-	Figure(shared_ptr<AbstractFigure> figure)noexcept :
+	Figure(shared_ptr<AbstractFigure> figure)noexcept:
 		figure_ptr_{ figure }, ui_info_{}, pointer_{ -1 }{
 
-	}
-
-	Figure()noexcept :
-		figure_ptr_{ nullptr }, ui_info_{}, pointer_{ -1 }{
-
+		//Start drawing ui_info and Draw ui_info - min number 
+		//of ui_info's for drawing figure
+		ui_info_.reserve(2);
 
 	}
+
+	Figure()noexcept:
+		figure_ptr_{ nullptr }, 
+		ui_info_{}, 
+		pointer_{ -1 }{	}
 
 	Figure& operator=(Figure&& move_figure)noexcept {
 
@@ -40,7 +44,7 @@ public:
 
 	}
 
-	Figure(Figure&& move_figure)noexcept :
+	Figure(Figure&& move_figure)noexcept:
 		figure_ptr_{  }, ui_info_{}, pointer_{ -1 }{
 
 		std::swap(figure_ptr_, move_figure.figure_ptr_);
@@ -157,7 +161,7 @@ public:
 		ser_file.read(reinterpret_cast<char*>(&pointer), sizeof(int));
 
 		//Reading ui_info's
-		vector<UIInfo> read_ui_info{};
+		std::vector<UIInfo> read_ui_info{};
 		read_ui_info.reserve(ui_info_number);
 
 		for (uint64_t i = 0; i < ui_info_number; ++i) {
@@ -171,15 +175,15 @@ public:
 		if (ser_file.eof())
 			throw FigureException{ u8"Figure reading error." };
 
-		optional<Plugin*> plugin = PluginsManager::Access().GetPlugin(plugin_name.get());
+		Plugin& plugin = PluginsManager::Access()[plugin_name.get()];
 
 		//if there are no such loaded plugin - error, cleaning list of loaded plugins
-		if (!plugin.has_value())
-			throw FigureException{ u8"There are no such plugin." };
+		//if (!plugin.has_value())
+		//	throw FigureException{ u8"There are no such plugin." };
 
 		figure.pointer_ = pointer;
 		figure.ui_info_ = std::move(read_ui_info);
-		figure.figure_ptr_ = plugin.value()->GetFigure();
+		figure.figure_ptr_ = plugin.GetFigure();
 
 		return ser_file;
 

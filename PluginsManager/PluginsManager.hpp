@@ -4,40 +4,41 @@
 
 #include <cstdint>
 using std::uint64_t;
-#include <optional>
-using std::optional;
+
 #include <filesystem>
 namespace fs = std::filesystem;
-#include <vector>
-using std::vector;
+
+#include <map>
+using std::map;
+
+#include <string_view>
+using std::string_view;
 
 #include "Plugin.hpp"
+#include "Exception.hpp"
+
+using PluginsManagerException = Exception;
 
 class PluginsManager final {
 private:
 
-	vector<Plugin> loaded_plugins_;
-	fs::path plugins_path_;
+	map<string_view, Plugin> loaded_plugins_;
 
 private:
 	
-	static const uint64_t CheckNumbeOfPluginsInTheDirectory(const fs::path& plugins_path)noexcept;
-
 	explicit PluginsManager()noexcept;
 	~PluginsManager()noexcept;
 
-	explicit PluginsManager(PluginsManager&& manager)noexcept;
-	explicit PluginsManager(const PluginsManager& manager)noexcept = delete;
-
 public:
 
-	static PluginsManager& Access()noexcept;
-	const uint64_t GetLoadedPluginsNumber()const noexcept;
-	optional<Plugin*> GetPlugin(std::string_view plugin_name)noexcept;
-	const vector<Plugin>& GetAllLoadedPlugins()const noexcept;
-	const fs::path& GetPluginsPath()const noexcept;
-	void Load(const fs::path& plugins_folder_path)noexcept;
-	void UnloadAllPlugins();
+	static PluginsManager& Access();
+	static const fs::path inline plugins_path_{ fs::current_path() / u8"plugins" };
+
+	const uint64_t LoadedPluginsNumber()const noexcept;
+	const map<string_view, Plugin>& AllPlugins()const noexcept;
+	Plugin& operator[](const string_view plugin_name);
+	void Load()noexcept;
+	void Unload()noexcept;
 
 };
 

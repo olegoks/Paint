@@ -1,108 +1,88 @@
 #include "PluginsManager.hpp"
+#include <algorithm>
 
-const uint64_t PluginsManager::CheckNumbeOfPluginsInTheDirectory(const fs::path& plugins_path) noexcept{
+PluginsManager::PluginsManager()noexcept:
+	loaded_plugins_{ }{ }
 
-	using std::error_code;
-	using fs::directory_iterator;
+PluginsManager::~PluginsManager()noexcept{ }
 
-	error_code fs_error{};
-	directory_iterator plugins_dir_it{ plugins_path, fs_error};
-
-	if (fs_error)return 0;
-
-	uint64_t plugins_number = 0;
-
-	for (auto& maybe_plugin : plugins_dir_it)
-		if (maybe_plugin.path().extension() == Plugin::extension)
-			++plugins_number;
-
-	return plugins_number;
-
-}
-
-PluginsManager::PluginsManager() noexcept:
-	loaded_plugins_{ },
-	plugins_path_{ } {
-
-}
-
-PluginsManager::~PluginsManager() noexcept{
-
-}
-
-PluginsManager& PluginsManager::Access() noexcept {
-
-	using std::unique_ptr;
-	using std::make_unique;
+PluginsManager& PluginsManager::Access() {
 
 	static PluginsManager* unique_plugins_manager{ nullptr };
 
-	if (!unique_plugins_manager)
-		unique_plugins_manager = new PluginsManager{};
+	try {
+	
+		if (!unique_plugins_manager)
+			unique_plugins_manager = new PluginsManager{};
+	
+	} catch (const std::bad_alloc&) {
+
+		throw PluginsManagerException{ u8"Allocation memeory exception" };
+
+	}
 
 	return *unique_plugins_manager;
 
 }
 
-const uint64_t PluginsManager::GetLoadedPluginsNumber() const noexcept{
+const uint64_t PluginsManager::LoadedPluginsNumber() const noexcept{
 
     return loaded_plugins_.size();
 }
 
-optional<Plugin*> PluginsManager::GetPlugin(std::string_view plugin_name) noexcept{
-
-	for (auto& plugin : loaded_plugins_)
-		if (plugin.GetName() == plugin_name)
-			return &plugin;
-
-	return optional<Plugin*>{};
-}
-
-const vector<Plugin>& PluginsManager::GetAllLoadedPlugins() const noexcept{
+const map<string_view, Plugin>& PluginsManager::AllPlugins() const noexcept{
 
 	return loaded_plugins_;
-   
+
 }
 
-const fs::path& PluginsManager::GetPluginsPath() const noexcept{
+Plugin& PluginsManager::operator[](const string_view plugin_name){
 
-	return plugins_path_;
-}
+	try {
+	
+		return loaded_plugins_.at(plugin_name);
+	
+	} catch (const std::out_of_range& incorrect_index) {
 
-void PluginsManager::Load(const fs::path& plugins_folder_path) noexcept{
-
-	uint64_t plugins_number = CheckNumbeOfPluginsInTheDirectory(plugins_folder_path);
-	if (plugins_number == 0)return;
-
-	loaded_plugins_.reserve(plugins_number);
-	loaded_plugins_.shrink_to_fit();
-
-	using std::error_code;
-	using fs::directory_iterator;
-
-	error_code fs_error{ };
-	directory_iterator plugins_dir_it{ plugins_folder_path };
-	if (fs_error)return;
-
-	plugins_path_ = plugins_folder_path;
-
-	for (auto& maybe_plugin : plugins_dir_it) {
-
-		try {
-
-			if (maybe_plugin.path().extension() != Plugin::extension)continue;
-
-			Plugin plugin{ maybe_plugin.path() };
-			plugin.Load();
-			loaded_plugins_.push_back(std::move(plugin));
-
-		} catch (const PluginException& exception) { continue; }
+		throw PluginsManagerException{ u8"There is no plugin with such name." };
 
 	}
 
 }
 
-void PluginsManager::UnloadAllPlugins(){
+void PluginsManager::Load() noexcept{
+
+	try {
+
+		for (auto& maybe_plugin : fs::directory_iterator{ plugins_path_ }) {
+
+			//if file doesn't have Plugin extension, check next
+			if (maybe_plugin.path().extension() != Plugin::extension)continue;
+
+			Plugin plugin{ maybe_plugin.path() };
+
+			try {
+
+				plugin.Load();
+			
+			//Plugin loaded error. Maybe plugin doesn't have requared functions.
+			} catch (const PluginException& exception) { continue; }
+
+			loaded_plugins_.insert({ plugin.GetName(), std::move(plugin) });
+
+		}
+
+	//Directory constructor exception. Plugins path does no exist.
+	//Number of loaded plugins: 0;
+	} catch (const std::filesystem::filesystem_error& incorrect_path) {
+
+		return;
+
+	}
+
+}
+
+void PluginsManager::Unload()noexcept{
 
 	loaded_plugins_.clear();
 

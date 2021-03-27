@@ -51,8 +51,7 @@ void PaintCanvas::Deserialize(const std::filesystem::path& ser_file_path){
 	using namespace std;
 	using namespace filesystem;
 
-	if (!exists(ser_file_path))
-		throw PaintCanvasException{ u8"Serialization path doesn't exist." };
+	if (!exists(ser_file_path))return;
 
 	ifstream ser_file{ ser_file_path, ios::in | ios::binary };
 
@@ -130,7 +129,7 @@ void PaintCanvas::DeleteFromBufferNotDrawnFigures()noexcept {
 	//If pointer idicate last element don't do anything
 	if (pointer_ == figures_.size() -1)return;
 
-	figures_.erase(figures_.begin() + pointer_ + 1, figures_.end());
+	figures_.erase(figures_.begin() + (pointer_ + 1), figures_.end());
 
 }
 

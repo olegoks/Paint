@@ -24,17 +24,17 @@ using std::string;
 class Plugin {
 public:
 
+
 	using GetPluginName = std::string_view(*)();
 	using GetPluginObject = AbstractFigure*(*)();
 
 private:
 
-	DLL dll_;
+	
 	GetPluginName get_name_;
 	GetPluginObject get_object_;
 	fs::path dll_path_;
-
-protected:
+	DLL dll_;
 
 public:
 
@@ -47,19 +47,16 @@ public:
 	static const inline string extension = DLL::extension;
 	static const inline string image_extension{ u8".bmp" };
 
-	explicit Plugin(const fs::path& plugin_path) :
-		dll_{},
+	explicit Plugin(const fs::path& plugin_path):
 		get_name_{ nullptr },
 		get_object_{ nullptr },
-		dll_path_{ plugin_path }{
-
-		dll_ = std::move(DLL{ dll_path_.string() });
-
-	}
+		dll_path_{ plugin_path },
+		dll_{ dll_path_.string() }{ }
 
 	explicit Plugin(const Plugin& copy_plugin)noexcept = delete;
+	Plugin& operator=(const Plugin& copy_plugin)noexcept = delete;
 
-	Plugin(Plugin&& move_plugin)noexcept :
+	Plugin(Plugin&& move_plugin)noexcept:
 		Plugin{ fs::path{} } {
 
 		std::swap(dll_, move_plugin.dll_);
@@ -68,8 +65,6 @@ public:
 		std::swap(dll_path_, move_plugin.dll_path_);
 
 	}
-
-	Plugin& operator=(const Plugin& copy_plugin)noexcept = delete;
 
 	Plugin& operator=(Plugin&& move_plugin)noexcept {
 
@@ -86,18 +81,17 @@ public:
 
 	void Load() {
 
-		try {
+		if (!fs::exists(dll_path_))
+			throw PluginException{ u8"Plugin path isn't exist." };
 
-			if (!fs::exists(dll_path_))
-				throw PluginException{ u8"Plugin path isn't exist." };
+		try {
 
 			dll_.Load();
 
 			get_name_ = (GetPluginName)dll_.GetFunction(u8"GetPluginName");
 			get_object_ = (GetPluginObject)dll_.GetFunction(u8"GetPluginObject");
 
-		}
-		catch (const DLLException& exception) {
+		}catch (const DLLException& exception) {
 
 			throw PluginException{ u8"Loading dll error." };
 
@@ -105,34 +99,25 @@ public:
 
 	}
 
-	std::string_view GetName()const noexcept {
+	std::string_view GetName()const {
 
-		return get_name_();
+		if(dll_.Loaded())
+			return get_name_();
+
+		throw PluginException{ u8"Plugin didn't load." };
 
 	}
 
-	void Unload() {
+	void Unload()noexcept {
 
-		try {
-
-			dll_.Unload();
-
-		}
-		catch (const DLLException& exception) {
-
-			throw PluginException{ u8"Dll unloading error." };
-
-		}
+		dll_.Unload();
 
 	}
 
 	~Plugin()noexcept {
 
-		try {
-
+		if(dll_.Loaded())
 			dll_.Unload();
-
-		} catch (const DLLException& exception) {}
 
 	}
 

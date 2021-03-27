@@ -112,6 +112,8 @@ public:
 
 	}
 
+	bool Loaded()const noexcept { return hModule_; }
+
 	FARPROC GetFunction(const std::string& function_name) {
 
 		if (!hModule_)
@@ -128,7 +130,9 @@ public:
 
 	void Unload()noexcept {
 
-		FreeLibrary(hModule_);
+		//Dll was loaded
+		if(hModule_)
+			FreeLibrary(hModule_);
 
 	}
 
