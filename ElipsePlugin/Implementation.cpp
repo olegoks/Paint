@@ -11,7 +11,7 @@ void Elipse::StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info){
 
 	start_ = ui_info.mouse_click_;
 	border_color_ = ui_info.border_color_;
-	border_thickness_ = 1;//ui_info.border_thickness_;
+	border_thickness_ = ui_info.border_thickness_;
 
 }
 

@@ -21,8 +21,7 @@ void PolygonFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 	if (!second_.X() && !second_.Y()) {
 		second_ = ui_info.mouse_click_;
 		canvas.Line(first_.X(), first_.Y(), second_.X(), second_.Y(), border_thickness_, border_color_);
-	}
-	else if (!third_.X() && !third_.Y()){
+	} else if (!third_.X() && !third_.Y()){
 
 		third_ = ui_info.mouse_click_;
 

@@ -8,6 +8,8 @@ std::string_view SquareFigure::GetPluginName() const noexcept{
 
 void SquareFigure::StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info) {
 
+	left_bottom_ = ui_info.mouse_click_;
+
 }
 
 void SquareFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){

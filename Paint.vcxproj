@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>Exe</OutDir>
+    <OutDir>Exe\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -84,7 +84,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>Exe</OutDir>
+    <OutDir>Exe\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\C++\Paint\PluginsManager;D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\PluginsManager;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
@@ -125,7 +125,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Form.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;$(MSBuildProjectDirectory)\Library\;$(MSBuildProjectDirectory)\FormsLibrary\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -159,7 +159,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\C++\Paint\PluginsManager;D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\PluginsManager;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
@@ -169,7 +169,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Form.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;$(MSBuildProjectDirectory)\Library\;$(MSBuildProjectDirectory)\FormsLibrary\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
