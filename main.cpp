@@ -8,7 +8,7 @@ private:
 public:
 
 	explicit PaintApplication():
-		main_form_{ L"Paint", Coordinats{ 0, 0 }, Size{ 500, 400 } } { }
+		main_form_{ L"Paint", Coordinats{ 0, 0 }, Size{ 800, 500 } } { }
 
 	void Run(int nCmdShow){
 
