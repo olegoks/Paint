@@ -16,7 +16,7 @@ void PolygonFigure::StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info) {
 
 }
 
-void PolygonFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
+bool PolygonFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 
 	if (!second_.X() && !second_.Y()) {
 		second_ = ui_info.mouse_click_;
@@ -42,6 +42,8 @@ void PolygonFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 		canvas.Line(third_.X(), third_.Y(), first_.X(), first_.Y(), border_thickness_, border_color_);
 
 	}
+
+	return true;
 
 }
 

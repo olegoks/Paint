@@ -31,7 +31,7 @@ public:
 
 	std::string_view GetPluginName()const noexcept override;
 	void StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info)override;
-	void Draw(PaintCanvas& canvas, const UIInfo& ui_info)override;
+	bool Draw(PaintCanvas& canvas, const UIInfo& ui_info)override;
 	void EndDrawing()override;
 
 };

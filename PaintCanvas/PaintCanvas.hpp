@@ -54,7 +54,7 @@ public:
 	bool ThereIsFigureToDraw()const noexcept;
 
 	void StartDraw(const UIInfo& ui_info);
-	void Draw(const UIInfo& parametrs)noexcept;
+	bool Draw(const UIInfo& parametrs)noexcept;
 	void EndDraw()noexcept;
 
 	void Serialize(const fs::path& ser_file_path);

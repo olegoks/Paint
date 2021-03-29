@@ -12,7 +12,7 @@ void SquareFigure::StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info) {
 
 }
 
-void SquareFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
+bool SquareFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 
 	right_top_ = ui_info.mouse_click_;
 	border_color_ = ui_info.border_color_;
@@ -24,8 +24,12 @@ void SquareFigure::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 	canvas.Line(right_top_.X(), right_top_.Y(), right_top_.X(), left_bottom_.Y(), border_thickness_, border_color_);
 	canvas.Line(right_top_.X(), left_bottom_.Y(), left_bottom_.X(), left_bottom_.Y(), border_thickness_, border_color_);
 
+	return false;
+
 }
 
 void SquareFigure::EndDrawing() {
+
+
 
 }

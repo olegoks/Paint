@@ -157,13 +157,15 @@ void PaintCanvas::StartDraw(const UIInfo& ui_info){
 	
 }
 
-void PaintCanvas::Draw(const UIInfo& ui_info) noexcept {
+bool PaintCanvas::Draw(const UIInfo& ui_info) noexcept {
 
 	if (figures_.back().Empty())
 		figures_.back().StartDrawing(*this, ui_info);
 	else
-		figures_.back().Draw(*this, ui_info);
+		 return figures_.back().Draw(*this, ui_info);
 
+
+	return false;
 }
 
 void PaintCanvas::EndDraw() noexcept {

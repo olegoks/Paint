@@ -15,15 +15,15 @@ void Elipse::StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info){
 
 }
 
-void Elipse::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
+bool Elipse::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 	
 	end_ = ui_info.mouse_click_;
 
 	float width = (int)end_.X() - (int)start_.X();
-	if (width < 0.1f)return;
+	if (width < 0.1f)return false;
 
 	float height = (int)end_.Y() - (int)start_.Y();
-	if (height < 0.1f)return;
+	if (height < 0.1f)return false;
 	
 	const float a = width / 2.0f;
 	const float b = height / 2.0f;
@@ -58,6 +58,7 @@ void Elipse::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 	canvas.Line(left.X(), left.Y(), start_.X() + (uint64_t)width / 2, end_.Y(), border_thickness_, border_color_);
 	canvas.Line(right.X(), right.Y(), start_.X() + (uint64_t)width / 2, end_.Y(), border_thickness_, border_color_);
 
+	return false;
 
 }
 

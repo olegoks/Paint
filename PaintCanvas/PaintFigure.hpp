@@ -93,14 +93,14 @@ public:
 
 	}
 
-	void Draw(PaintCanvas& canvas, const UIInfo& ui_info)noexcept {
+	bool Draw(PaintCanvas& canvas, const UIInfo& ui_info)noexcept {
 
 		if (pointer_ != -1)
 			ui_info_.erase(ui_info_.begin() + pointer_ + 1, ui_info_.end());
 
 		ui_info_.push_back(ui_info);
 		++pointer_;
-		figure_ptr_->Draw(canvas, ui_info);
+		return figure_ptr_->Draw(canvas, ui_info);
 
 	}
 

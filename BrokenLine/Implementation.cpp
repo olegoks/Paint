@@ -14,13 +14,15 @@ void BrokenLine::StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info){
 
 }
 
-void BrokenLine::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
+bool BrokenLine::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 	
 	end_ = ui_info.mouse_click_;
 
 	canvas.Line(start_.X(), start_.Y(), end_.X(), end_.Y(), line_thickness_, color_);
 
 	start_ = end_;
+
+	return true;
 
 }
 

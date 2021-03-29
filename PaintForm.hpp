@@ -94,8 +94,10 @@ public:
 
 		canvas_.SetProcessActionsFunction([this, canvas_pos](PaintCanvas& canvas, Message& message)->bool {
 
-			static Coordinats figure_position{ 0, 0 };
+			//static Coordinats figure_position{ 0, 0 };
 			static UIInfo ui_info{};
+
+			static bool figureIsDrawing = false;
 
 			colors_panel_.GetSelectedColors(ui_info.border_color_, ui_info.fill_color_);
 			ui_info.border_thickness_ = line_thickness_panel_.GetLineThickness();
@@ -124,20 +126,20 @@ public:
 
 				if (!canvas.ThereIsFigureToDraw())return true;
 
-				if (!figure_position.X() && !figure_position.Y()) {
+				if (!figureIsDrawing) {
 
-					figure_position = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
-					ui_info.mouse_click_ = figure_position;
+					ui_info.mouse_click_ = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
 					
 					canvas_.StartDraw(ui_info);
 					canvas_.Flush();
+					
+					figureIsDrawing = true;
 
 				} else {
 
-					figure_position = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
-					ui_info.mouse_click_ = figure_position;
+					ui_info.mouse_click_ = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
 
-					canvas_.Draw(ui_info);
+					figureIsDrawing = canvas_.Draw(ui_info);
 					canvas_.Flush();
 
 				}
@@ -148,13 +150,10 @@ public:
 
 			case Action::MouseMove: {
 
-				if (!figure_position.X() && !figure_position.Y())
+				if (!figureIsDrawing)
 					return true;
 
-				Coordinats left_bottom{ figure_position.X(), figure_position.Y() };
-				Coordinats mouse_pos_{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
-
-				ui_info.mouse_click_ = mouse_pos_;
+				ui_info.mouse_click_ = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
 
 				canvas.ReturnBackFigureDrawing();
 				canvas.Draw(ui_info);
@@ -166,8 +165,7 @@ public:
 
 			case Action::RMouseDown: {
 
-				//Figure drawing ended
-				figure_position = Coordinats{ 0, 0 };
+				figureIsDrawing = false;
 
 				canvas_.ReturnBackFigureDrawing();
 				canvas_.EndDraw();
