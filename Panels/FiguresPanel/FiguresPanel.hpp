@@ -57,6 +57,8 @@ public:
 		const uint64_t plugins_number = manager.LoadedPluginsNumber();
 		const uint64_t buttons_number = plugins_number;
 
+		if (!buttons_number)return;
+
 		uint64_t button_height = FiguresPanel::size_.Height() / buttons_number;
 
 		if (button_height > max_button_height)

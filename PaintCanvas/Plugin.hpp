@@ -24,7 +24,6 @@ using std::string;
 class Plugin {
 public:
 
-
 	using GetPluginName = std::string_view(*)();
 	using GetPluginObject = AbstractFigure*(*)();
 
@@ -65,6 +64,7 @@ public:
 		std::swap(dll_path_, move_plugin.dll_path_);
 
 	}
+
 
 	Plugin& operator=(Plugin&& move_plugin)noexcept {
 

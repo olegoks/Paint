@@ -76,6 +76,12 @@ public:
 
 	}
 
+	std::string_view GetName()const noexcept {
+
+		return figure_ptr_->GetPluginName();
+
+	}
+
 	void StartDrawing(PaintCanvas& canvas, const UIInfo& ui_info)noexcept {
 
 		if (pointer_ != -1)

@@ -99,19 +99,19 @@ void PaintCanvas::Deserialize(const std::filesystem::path& ser_file_path){
 
 				throw PaintCanvasException{ u8"Incorrect file format." };
 
-			} else if (error.What() == u8"There are no such plugin.") {
+			} else if (error.What() == u8"There is no plugin with such name.") {
 
+				pointer_ = -1;
 				figures_.clear();
+				break;
 
-				throw PaintCanvasException{ u8"Incorrect file format of didn't install plugins." };
+				//throw PaintCanvasException{ u8"Incorrect file format of didn't install plugins." };
 
 			}
 
 		}
 
 	}
-
-
 
 }
 
