@@ -64,7 +64,7 @@ public:
 
 	void ReturnBack()noexcept {
 
-		if (pointer_ > 0)
+		if (pointer_ > -1)
 			--pointer_;
 
 	}
@@ -182,10 +182,6 @@ public:
 			throw FigureException{ u8"Figure reading error." };
 
 		Plugin& plugin = PluginsManager::Access()[plugin_name.get()];
-
-		//if there are no such loaded plugin - error, cleaning list of loaded plugins
-		//if (!plugin.has_value())
-		//	throw FigureException{ u8"There are no such plugin." };
 
 		figure.pointer_ = pointer;
 		figure.ui_info_ = std::move(read_ui_info);

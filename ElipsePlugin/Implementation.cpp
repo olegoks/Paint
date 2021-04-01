@@ -19,11 +19,15 @@ bool Elipse::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 	
 	end_ = ui_info.mouse_click_;
 
-	float width = (int)end_.X() - (int)start_.X();
-	if (width < 0.1f)return false;
+	float width = std::abs((int)end_.X() - (int)start_.X());
 
-	float height = (int)end_.Y() - (int)start_.Y();
-	if (height < 0.1f)return false;
+	if (width < 0.1f)
+		return false;
+
+	float height = std::abs((int)end_.Y() - (int)start_.Y());
+
+	if (height < 0.1f)
+		return false;
 	
 	const float a = width / 2.0f;
 	const float b = height / 2.0f;
@@ -34,13 +38,42 @@ bool Elipse::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 	//	  a^2		  b^2
 	//
 
-	const float center_x = start_.X() + a;
-	const float center_y = start_.Y() + b;
+	float center_x = 0;//start_.X() + a;
+	float center_y = 0;//start_.Y() + b;
 	
-	Coordinats left{ start_.X() + (uint64_t)width / 2, start_.Y() };
+	if (start_.Y() < end_.Y()) {
+
+		center_y = start_.Y() + b;
+
+	} else {
+
+		center_y = start_.Y() - b;
+
+	}
+
+	if (start_.X() < end_.X()) {
+
+		center_x = start_.X() + a;
+
+	} else {
+
+		center_x = start_.X() - a;
+
+	}
+
+	Coordinats left{ (uint64_t)center_x, (uint64_t)center_y - (uint64_t)b };
 	Coordinats right{ left };
 
-	for(uint64_t y = start_.Y(); y < end_.Y(); y += 5){
+	std::uint64_t start_y = start_.Y();
+	std::uint64_t end_y = end_.Y();
+
+	if (start_y > end_y) {
+
+		std::swap(start_y, end_y);
+
+	}
+
+	for(uint64_t y = start_y; y < end_y; y += 5){
 
 		const float value = abs(a) * sqrt((1 -  pow(static_cast<float>(y) - center_y, 2) / pow(b, 2)));
 		
@@ -55,8 +88,8 @@ bool Elipse::Draw(PaintCanvas& canvas, const UIInfo& ui_info){
 		
 	}
 
-	canvas.Line(left.X(), left.Y(), start_.X() + (uint64_t)width / 2, end_.Y(), border_thickness_, border_color_);
-	canvas.Line(right.X(), right.Y(), start_.X() + (uint64_t)width / 2, end_.Y(), border_thickness_, border_color_);
+	canvas.Line(left.X(), left.Y(), (uint64_t)center_x, (uint64_t)center_y + (uint64_t)b, border_thickness_, border_color_);
+	canvas.Line(right.X(), right.Y(), (uint64_t)center_x, (uint64_t)center_y + (uint64_t)b, border_thickness_, border_color_);
 
 	return false;
 

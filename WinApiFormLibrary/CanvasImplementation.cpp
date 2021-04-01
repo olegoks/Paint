@@ -74,9 +74,7 @@ const uint64_t CanvasImplementation::GetY() const noexcept
 
 void CanvasImplementation::SolidRectangle(const uint64_t x, const uint64_t y, const uint64_t width, const uint64_t height, const Color& fill_color){
 
-
 	//...
-
 
 }
 

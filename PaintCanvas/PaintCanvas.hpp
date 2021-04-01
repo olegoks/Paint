@@ -51,11 +51,11 @@ public:
 	explicit PaintCanvas(const HWND parent_hWnd)noexcept;
 	
 	void ChangeFigureToDraw(const Plugin& plugin)noexcept;
-	bool ThereIsFigureToDraw()const noexcept;
+	bool SelectedFigure()const noexcept;
 
-	void StartDraw(const UIInfo& ui_info);
-	bool Draw(const UIInfo& parametrs)noexcept;
-	void EndDraw()noexcept;
+	void CurrentFigureStartDrawing(const UIInfo& ui_info);
+	bool CurrentFigureDrawing(const UIInfo& parametrs)noexcept;
+	void CurrentFigureEndDrawing()noexcept;
 
 	void Serialize(const fs::path& ser_file_path);
 	void Deserialize(const fs::path& ser_file_path);
@@ -70,6 +70,7 @@ public:
 	const uint64_t GetWidth()const noexcept { return Canvas::GetWidth(); }
 	const uint64_t GetHeight()const noexcept { return Canvas::GetHeight(); }
 
+	void DrawAllFigures()noexcept;
 	void Flush()noexcept;
 
 	~PaintCanvas()noexcept;

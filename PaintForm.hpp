@@ -98,6 +98,9 @@ public:
 			static UIInfo ui_info{};
 
 			static bool figureIsDrawing = false;
+			static bool preview = false;
+
+			ui_info.mouse_click_ = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
 
 			colors_panel_.GetSelectedColors(ui_info.border_color_, ui_info.fill_color_);
 			ui_info.border_thickness_ = line_thickness_panel_.GetLineThickness();
@@ -124,23 +127,38 @@ public:
 
 			case Action::LMouseDown: {
 
-				if (!canvas.ThereIsFigureToDraw())return true;
+				if (canvas.SelectedFigure()) {
 
-				if (!figureIsDrawing) {
+					if (!figureIsDrawing) {
 
-					ui_info.mouse_click_ = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
-					
-					canvas_.StartDraw(ui_info);
-					canvas_.Flush();
-					
-					figureIsDrawing = true;
+						canvas.CurrentFigureStartDrawing(ui_info);
+						canvas.DrawAllFigures();
+						canvas.Flush();
 
-				} else {
+						figureIsDrawing = true;
 
-					ui_info.mouse_click_ = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
+					} else {
 
-					figureIsDrawing = canvas_.Draw(ui_info);
-					canvas_.Flush();
+						if (preview) {
+
+							canvas.ReturnBackFigureDrawing();
+							canvas.DrawAllFigures();
+
+							preview = false;
+
+						}
+
+						figureIsDrawing = canvas.CurrentFigureDrawing(ui_info);
+
+						if (!figureIsDrawing) {
+
+							canvas.CurrentFigureEndDrawing();
+
+						}
+
+						canvas.Flush();
+
+					}
 
 				}
 
@@ -150,14 +168,22 @@ public:
 
 			case Action::MouseMove: {
 
-				if (!figureIsDrawing)
-					return true;
+				if (figureIsDrawing) {
 
-				ui_info.mouse_click_ = Coordinats{ (uint64_t)message.GetX(), (uint64_t)message.GetY() };
+					if (preview) {
 
-				canvas.ReturnBackFigureDrawing();
-				canvas.Draw(ui_info);
-				canvas.Flush();
+						canvas.ReturnBackFigureDrawing();
+						canvas.DrawAllFigures();
+
+					}
+
+					canvas.CurrentFigureDrawing(ui_info);
+					canvas.DrawAllFigures();
+					canvas.Flush();
+					
+					preview = true;
+
+				}
 
 				return true;
 
@@ -165,11 +191,24 @@ public:
 
 			case Action::RMouseDown: {
 
-				figureIsDrawing = false;
+				if (figureIsDrawing) {
 
-				canvas_.ReturnBackFigureDrawing();
-				canvas_.EndDraw();
-				canvas.Flush();
+					if (preview) {
+
+						canvas.ReturnBackFigureDrawing();
+						canvas.DrawAllFigures();
+
+						preview = false;
+
+					}
+
+					figureIsDrawing = false;
+
+					canvas.CurrentFigureEndDrawing();
+					canvas.DrawAllFigures();
+					canvas.Flush();
+
+				}
 
 				return true;
 
@@ -177,7 +216,7 @@ public:
 
 			case Action::Repaint: {
 
-				canvas_.Flush();
+				canvas.Flush();
 
 				return true;
 			}
@@ -202,7 +241,9 @@ public:
 			if (message.GetAction() == Action::ButtonClicked) {
 
 				canvas_.ReturnBack();
+				canvas_.DrawAllFigures();
 				canvas_.Flush();
+
 				return true;
 
 			}
@@ -222,6 +263,7 @@ public:
 			if (message.GetAction() == Action::ButtonClicked) {
 
 				canvas_.ReturnForward();
+				canvas_.DrawAllFigures();
 				canvas_.Flush();
 
 				return true;
@@ -304,6 +346,7 @@ public:
 		*/
 
 		canvas_.Deserialize(std::filesystem::current_path() / "ser");
+		canvas_.DrawAllFigures();
 		canvas_.Flush();
 
 	}

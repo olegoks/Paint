@@ -1,13 +1,13 @@
 #include "PaintCanvas.hpp"
 #include "PaintFigure.hpp"
 
-void PaintCanvas::ChangeFigureToDraw(const Plugin& plugin) noexcept{
+void PaintCanvas::ChangeFigureToDraw(const Plugin& plugin) noexcept {
 
 	current_plugin_ = &plugin;
 
 }
 
-bool PaintCanvas::ThereIsFigureToDraw() const noexcept{
+bool PaintCanvas::SelectedFigure() const noexcept {
 
 	return current_plugin_ != nullptr;
 }
@@ -17,14 +17,14 @@ void PaintCanvas::Serialize(const std::filesystem::path& ser_file_path) {
 	using namespace std;
 	using namespace filesystem;
 
-	if (!exists(ser_file_path.parent_path())) 
+	if (!exists(ser_file_path.parent_path()))
 		throw PaintCanvasException{ u8"Serialization path doesn't exist." };
 
 	ofstream ser_file{ ser_file_path, ios::out | ios::binary };
 
-	if (!ser_file.is_open()) 
+	if (!ser_file.is_open())
 		throw PaintCanvasException{ u8"Opening serialization file error." };
-	
+
 	//				  |						 Figure						 |
 	// _______ _______|__________ _______ _______ ______________ ________|    _________ ______
 	//|pointer|canvas |figure    |figure |UIInfo |UIInfo |UIInfo |UIInfo |	 |figure   |canvas|
@@ -41,12 +41,12 @@ void PaintCanvas::Serialize(const std::filesystem::path& ser_file_path) {
 
 	for (auto& figure : figures_)
 		ser_file << figure;
-		
+
 	figures_.clear();
 
 }
 
-void PaintCanvas::Deserialize(const std::filesystem::path& ser_file_path){
+void PaintCanvas::Deserialize(const std::filesystem::path& ser_file_path) {
 
 	using namespace std;
 	using namespace filesystem;
@@ -76,39 +76,31 @@ void PaintCanvas::Deserialize(const std::filesystem::path& ser_file_path){
 	while (true) {
 
 		try {
-		
+
 			Figure read_figure{};
 			ser_file >> read_figure;
 			figures_.push_back(std::move(read_figure));
-		
+
 		} catch (const FigureException& error) {
 
 			if (error.What() == u8"Serialization file is empty.") {
 
-				//PaintCanvas::ChangeSize(canvas_size.Width(), canvas_size.Height());
 				pointer_ = pointer;
 
 				break;
 
-			} else if(error.What() == u8"Figure reading error.") {
-
-				//Error: file is incorrect
-				//Cleaning all read figures
+			} else if (error.What() == u8"Figure reading error.") {
 
 				figures_.clear();
 
 				throw PaintCanvasException{ u8"Incorrect file format." };
 
-			} else if (error.What() == u8"There is no plugin with such name.") {
+			} if (error.What() == u8"There is no plugin with such name.") {
+				
+				--pointer;
 
-				pointer_ = -1;
-				figures_.clear();
-				break;
-
-				//throw PaintCanvasException{ u8"Incorrect file format of didn't install plugins." };
-
+				continue;
 			}
-
 		}
 
 	}
@@ -127,7 +119,7 @@ void PaintCanvas::AddToBufferNewFigure(Figure&& figure)noexcept {
 void PaintCanvas::DeleteFromBufferNotDrawnFigures()noexcept {
 
 	//If pointer idicate last element don't do anything
-	if (pointer_ == figures_.size() -1)return;
+	if (pointer_ == figures_.size() - 1)return;
 
 	figures_.erase(figures_.begin() + (pointer_ + 1), figures_.end());
 
@@ -145,53 +137,57 @@ PaintCanvas::PaintCanvas(const HWND parent_hWnd)noexcept :
 
 }
 
-void PaintCanvas::StartDraw(const UIInfo& ui_info){
-	
+void PaintCanvas::CurrentFigureStartDrawing(const UIInfo& ui_info) {
+
 	if (current_plugin_ == nullptr) throw PaintCanvasException{ u8"Plugin didn't select." };
 
 	Figure figure{ current_plugin_->GetFigure() };
 	DeleteFromBufferNotDrawnFigures();
 	AddToBufferNewFigure(std::move(figure));
 	figures_.back().StartDrawing(*this, ui_info);
-	
-	
+
+
 }
 
-bool PaintCanvas::Draw(const UIInfo& ui_info) noexcept {
+bool PaintCanvas::CurrentFigureDrawing(const UIInfo& ui_info) noexcept {
 
 	if (figures_.back().Empty())
 		figures_.back().StartDrawing(*this, ui_info);
 	else
-		 return figures_.back().Draw(*this, ui_info);
+		return figures_.back().Draw(*this, ui_info);
 
 
 	return false;
 }
 
-void PaintCanvas::EndDraw() noexcept {
+void PaintCanvas::CurrentFigureEndDraw() noexcept {
 
 	figures_.back().EndDrawing();
 
 }
 
-void PaintCanvas::Flush() noexcept{
+void PaintCanvas::DrawAllFigures() noexcept{
 
 	Canvas::Fill(fill_color_);
 
 	for (signed int figure = 0; figure <= pointer_; ++figure)
 		figures_[figure].Draw(*this);
+	
+}
+
+void PaintCanvas::Flush() noexcept {
 
 	Canvas::Flush();
 
 }
 
 void PaintCanvas::ReturnBackFigureDrawing()noexcept {
-	
+
 	figures_.back().ReturnBack();
 
 }
 
-void PaintCanvas::ReturnForwardFigureDrawing() noexcept{
+void PaintCanvas::ReturnForwardFigureDrawing() noexcept {
 
 	figures_.back().ReturnForward();
 
@@ -203,8 +199,8 @@ void PaintCanvas::ReturnBack()noexcept {
 
 	Canvas::Fill(fill_color_);
 
-	for (signed int figure_it = 0; figure_it < pointer_ ; ++figure_it)
-			figures_[figure_it].Draw(*this);
+	for (signed int figure_it = 0; figure_it < pointer_; ++figure_it)
+		figures_[figure_it].Draw(*this);
 
 	--pointer_;
 
@@ -231,7 +227,7 @@ void PaintCanvas::SetProcessActionsFunction(ProcessAction process_action)noexcep
 
 		if (message.GetAction() == Action::Resized) {
 
-		
+
 		}
 
 		return process_action_(*this, message);
