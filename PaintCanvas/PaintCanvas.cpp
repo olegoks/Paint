@@ -160,7 +160,7 @@ bool PaintCanvas::CurrentFigureDrawing(const UIInfo& ui_info) noexcept {
 	return false;
 }
 
-void PaintCanvas::CurrentFigureEndDraw() noexcept {
+void PaintCanvas::CurrentFigureEndDrawing() noexcept {
 
 	figures_.back().EndDrawing();
 

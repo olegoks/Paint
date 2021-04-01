@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\C++\Paint\PluginsManager\;D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\PluginsManager;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <Optimization>Custom</Optimization>
@@ -102,7 +102,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Form.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;$(MSBuildProjectDirectory)\Library\;$(MSBuildProjectDirectory)\FormsLibrary\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -136,7 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\C++\Paint\PluginsManager\;D:\C++\WinApiFormLibrary;D:\C++\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\Plugin\;$(MSBuildProjectDirectory)\AbstractFigure;$(MSBuildProjectDirectory)\CanvasCommand;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;$(MSBuildProjectDirectory)\DLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\PluginsManager;$(MSBuildProjectDirectory)\WinApiFormLibrary\Library;$(MSBuildProjectDirectory)\PaintCanvas\;$(MSBuildProjectDirectory)\Panels\ColorsPanel\;$(MSBuildProjectDirectory)\Panels\FiguresPanel\;$(MSBuildProjectDirectory)\ColorsPanel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <Optimization>Custom</Optimization>
@@ -146,7 +146,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Form.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;$(MSBuildProjectDirectory)\Library\;$(MSBuildProjectDirectory)\FormsLibrary\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Exe\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
