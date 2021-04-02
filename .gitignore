@@ -3,7 +3,7 @@ x64/
 Debug
 FormsLibrary/x64
 FormsLibrary/*.vs
-plugins/
+
 Exe/
 # Prerequisites
 *.d
